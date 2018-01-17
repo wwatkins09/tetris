@@ -139,14 +139,27 @@ class Tetrimino {
     this.x = 0;
     this.y = 0;
     this.move = this.move.bind(this);
+    this.rerender = this.rerender.bind(this);
+    this.area = [];
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
   }
 
-  move() {
-
-
+  move(dir) {
+    if (dir === 'down') {
+      this.rerender([0, 1]);
+    }
+    if (dir === 'left' && this.x > 0) {
+      this.rerender([-1, 0]);
+    }
+    if (dir === 'right' && this.x < 10 - (this.area[0])) {
+      this.rerender([1, 0]);
+    }
   }
+
+    rerender() {
+
+    }
 
   getBlocksBelow() {
     let result = [];
@@ -191,28 +204,16 @@ class Alpha extends Tetrimino {
     super(ctx, well);
     this.y += 1;
     ctx.fillStyle = 'orange';
+    this.area = [3, 2];
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 120, 40);
-    this.ctx.clearRect(((this.x + 2) * 40), ((this.y - 1) * 40), 40, 40);    this.y = this.y + 1;
+    this.ctx.clearRect(((this.x + 2) * 40), ((this.y - 1) * 40), 40, 40);
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 120, 40);
     this.ctx.fillRect(((this.x + 2) * 40), ((this.y - 1) * 40), 40, 40);
-    if ((this.y * 40) === 760) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 280) {
-      this.x += 1;
-    }
   }
 
   canMove() {
@@ -235,27 +236,14 @@ class Square extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'yellow';
+    this.area = [2, 2]
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 80);
-    this.y = this.y + 1;
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 80);
-    if ((this.y * 40) === 720) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 320) {
-      this.x += 1;
-    }
   }
 
   canMove() {
@@ -278,26 +266,16 @@ class Pyramid extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'magenta';
+    this.area = [3, 2]
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 120, 40);
-    this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40)
-    this.y = this.y + 1;
+    this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40);
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 120, 40);
-    this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40)
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 280) {
-      this.x += 1;
-    }
+    this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40);
   }
 
   canMove() {
@@ -321,29 +299,16 @@ class Gamma extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'blue';
+    this.area = [3, 2];
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 40, 40);
-    this.ctx.clearRect((this.x * 40), ((this.y + 1) * 40), 120, 40)
-    this.y = this.y + 1;
+    this.ctx.clearRect(((this.x) * 40), ((this.y + 1) * 40), 120, 40);
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 40, 40);
-    this.ctx.fillRect((this.x * 40), ((this.y + 1) * 40), 120, 40)
-    if ((this.y * 40) === 720) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 280) {
-      this.x += 1;
-    }
+    this.ctx.fillRect((this.x * 40), ((this.y + 1) * 40), 120, 40);
   }
 
   canMove() {
@@ -366,29 +331,16 @@ class LeftSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'red';
+    this.area = [3, 2];
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.clearRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40)
-    this.y = this.y + 1;
+    this.ctx.clearRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.fillRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40)
-    if ((this.y * 40) === 720) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 280) {
-      this.x += 1;
-    }
+    this.ctx.fillRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
   }
 
   canMove() {
@@ -411,29 +363,16 @@ class RightSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'green';
+    this.area = [3, 2];
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40) , 80, 40)
-    this.y = this.y + 1;
+    this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40), 80, 40);
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40) , 80, 40)
-    if ((this.y * 40) === 760) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 280) {
-      this.x += 1;
-    }
+    this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 80, 40);
   }
 
   canMove() {
@@ -456,27 +395,14 @@ class Straight extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'cyan';
+    this.area = [4, 1];
   }
 
-  move() {
+  rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 160, 40);
-    this.y = this.y + 1;
+    this.x += arr[0];
+    this.y += arr[1];
     this.ctx.fillRect((this.x * 40), (this.y * 40), 160, 40);
-    if ((this.y * 40) === 760) {
-      clearInterval(this.falling);
-    }
-  }
-
-  moveLeft() {
-    if (this.x > 0) {
-      this.x -= 1;
-    }
-  }
-
-  moveRight() {
-    if ((this.x * 40) < 240) {
-      this.x += 1;
-    }
   }
 
   canMove() {
@@ -518,7 +444,7 @@ class Game {
 
   handleVerticalMovement() {
     if (this.currentTetrimino.canMove()) {
-      this.currentTetrimino.move();
+      this.currentTetrimino.move('down');
     } else {
       clearInterval(this.falling)
       this.setupNewPiece();
@@ -532,10 +458,10 @@ class Game {
 
   handleHorizontalMovement(event) {
     if (event.key === "ArrowLeft") {
-      this.currentTetrimino.moveLeft();
+      this.currentTetrimino.move('left');
     }
     if (event.key === "ArrowRight") {
-      this.currentTetrimino.moveRight();
+      this.currentTetrimino.move('right');
     }
   }
 

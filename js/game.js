@@ -24,7 +24,7 @@ class Game {
 
   handleVerticalMovement() {
     if (this.currentTetrimino.canMove()) {
-      this.currentTetrimino.move();
+      this.currentTetrimino.move('down');
     } else {
       clearInterval(this.falling)
       this.setupNewPiece();
@@ -38,10 +38,10 @@ class Game {
 
   handleHorizontalMovement(event) {
     if (event.key === "ArrowLeft") {
-      this.currentTetrimino.moveLeft();
+      this.currentTetrimino.move('left');
     }
     if (event.key === "ArrowRight") {
-      this.currentTetrimino.moveRight();
+      this.currentTetrimino.move('right');
     }
   }
 
