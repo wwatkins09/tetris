@@ -80,6 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const Well = __webpack_require__(2);
 const Tetrimino = __webpack_require__(4);
+const Alpha = __webpack_require__(6);
+const Square = __webpack_require__(7);
+const Pyramid = __webpack_require__(8);
 
 class View {
 
@@ -88,7 +91,7 @@ class View {
     canvasEl.height = 800;
     canvasEl.width = 400;
     const ctx = canvasEl.getContext('2d');
-    new Tetrimino(ctx);
+    new Pyramid(ctx);
   }
 
 }
@@ -135,9 +138,17 @@ module.exports = Well;
 class Tetrimino {
 
   constructor(ctx) {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0, 760, 120, 40);
-    ctx.fillRect(80, 720, 40, 40);
+    this.ctx = ctx;
+    this.x = 0;
+    this.y = 0;
+    this.move = this.move.bind(this);
+    this.falling = window.setInterval(this.move, 500)
+
+  }
+
+  move() {
+
+
   }
 
 }
@@ -159,6 +170,90 @@ class Block {
 }
 
 module.exports = Block;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class Alpha extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    this.y += 40;
+    ctx.fillStyle = 'orange';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 120, 40);
+    this.ctx.fillRect((this.x + 80), (this.y - 40), 40, 40);
+    if (this.y === 760) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = Alpha;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class Square extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    ctx.fillStyle = 'yellow';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 80, 80);
+    if (this.y === 720) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = Square;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class Pyramid extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    ctx.fillStyle = 'magenta';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 120, 40);
+    this.ctx.fillRect((this.x + 40), (this.y - 40), 40, 40)
+    if (this.y === 760) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = Pyramid;
 
 
 /***/ })

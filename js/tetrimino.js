@@ -1,9 +1,17 @@
 class Tetrimino {
 
   constructor(ctx) {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0, 760, 120, 40);
-    ctx.fillRect(80, 720, 40, 40);
+    this.ctx = ctx;
+    this.x = 0;
+    this.y = 0;
+    this.move = this.move.bind(this);
+    this.falling = window.setInterval(this.move, 500)
+
+  }
+
+  move() {
+
+
   }
 
 }
