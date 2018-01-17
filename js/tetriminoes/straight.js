@@ -28,6 +28,10 @@ class Straight extends Tetrimino {
     }
   }
 
+  cantMove() {
+    
+  }
+
 }
 
 module.exports = Straight;

@@ -13,10 +13,27 @@ class Game {
 
 
   constructor(ctx) {
-    this.currentTetrimino = new Square(ctx);
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
+    this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
+    this.well = new Well();
+    this.ctx = ctx;
+    this.setupNewPiece();
     document.addEventListener('keydown', this.handleHorizontalMovement)
+  }
+
+  handleVerticalMovement() {
+    if (this.currentTetrimino.canMove()) {
+      this.currentTetrimino.move();
+    } else {
+      clearInterval(this.falling)
+      this.setupNewPiece();
+    }
+  }
+
+  setupNewPiece() {
+    this.currentTetrimino = new Pyramid(this.ctx, this.well);
+    this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
   handleHorizontalMovement(event) {

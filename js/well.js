@@ -8,7 +8,7 @@ class Well {
     for (let i = 0; i < 20; i++) {
       let row = [];
       for (let j = 0; j < 10; j++) {
-        row.push(new Block([i,j], 'empty'));
+        row.push(new Block([i,j]));
       }
       blocks.push(row);
     }

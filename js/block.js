@@ -1,8 +1,8 @@
 class Block {
 
-  constructor(coord, status) {
+  constructor(coord) {
     this.coord = coord;
-    this.status = status;
+    this.status = 'empty';
   }
 
 }

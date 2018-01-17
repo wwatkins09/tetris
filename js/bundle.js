@@ -109,7 +109,7 @@ class Well {
     for (let i = 0; i < 20; i++) {
       let row = [];
       for (let j = 0; j < 10; j++) {
-        row.push(new Block([i,j], 'empty'));
+        row.push(new Block([i,j]));
       }
       blocks.push(row);
     }
@@ -133,13 +133,12 @@ module.exports = Well;
 
 class Tetrimino {
 
-  constructor(ctx) {
+  constructor(ctx, well) {
     this.ctx = ctx;
+    this.well = well;
     this.x = 0;
     this.y = 0;
     this.move = this.move.bind(this);
-    this.falling = window.setInterval(this.move, 500)
-
   }
 
   move() {
@@ -158,9 +157,9 @@ module.exports = Tetrimino;
 
 class Block {
 
-  constructor(coord, status) {
+  constructor(coord) {
     this.coord = coord;
-    this.status = status;
+    this.status = 'empty';
   }
 
 }
@@ -256,8 +255,8 @@ const Tetrimino = __webpack_require__(4);
 
 class Pyramid extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'magenta';
   }
 
@@ -266,9 +265,6 @@ class Pyramid extends Tetrimino {
     this.y = this.y + 1;
     this.ctx.fillRect((this.x * 40), (this.y * 40), 120, 40);
     this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40)
-    if ((this.y * 40) === 760) {
-      clearInterval(this.falling);
-    }
   }
 
   moveLeft() {
@@ -281,6 +277,21 @@ class Pyramid extends Tetrimino {
     if ((this.x * 40) < 280) {
       this.x += 1;
     }
+  }
+
+  canMove() {
+    console.log(this.y);
+    return (this.y < 19 && this.getBlocksBelow().length === 0)
+  }
+
+  getBlocksBelow() {
+    let result = [];
+    this.well.blocks[this.y + 1].forEach((block) => {
+      if (block.status === 'filled') {
+        result.push(block);
+      }
+    });
+    return result
   }
 
 }
@@ -442,6 +453,10 @@ class Straight extends Tetrimino {
     }
   }
 
+  cantMove() {
+    
+  }
+
 }
 
 module.exports = Straight;
@@ -466,10 +481,27 @@ class Game {
 
 
   constructor(ctx) {
-    this.currentTetrimino = new Square(ctx);
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
+    this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
+    this.well = new Well();
+    this.ctx = ctx;
+    this.setupNewPiece();
     document.addEventListener('keydown', this.handleHorizontalMovement)
+  }
+
+  handleVerticalMovement() {
+    if (this.currentTetrimino.canMove()) {
+      this.currentTetrimino.move();
+    } else {
+      clearInterval(this.falling)
+      this.setupNewPiece();
+    }
+  }
+
+  setupNewPiece() {
+    this.currentTetrimino = new Pyramid(this.ctx, this.well);
+    this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
   handleHorizontalMovement(event) {
