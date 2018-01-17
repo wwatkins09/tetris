@@ -85,6 +85,7 @@ class View {
 
   constructor($el) {
     this.$el = $el;
+    this.well = new Well();
     this.createGrid();
   }
 
@@ -92,9 +93,9 @@ class View {
   createGrid() {
     let newHtml = '';
     for (let i = 0; i < 20; i++) {
-      newHtml += "<ul class='row'>";
+      newHtml += `<ul class='row'>`;
       for (let j = 0; j < 10; j++) {
-        newHtml += "<li class='square empty'></li>";
+        newHtml += `<li class='square ${this.well.getBlock([i, j]).status}'></li>`;
       }
       newHtml += "</ul>";
     }
@@ -109,12 +110,27 @@ module.exports = View;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+const Block = __webpack_require__(5);
 
 class Well {
 
   constructor() {
+    let blocks = [];
+    for (let i = 0; i < 20; i++) {
+      let row = [];
+      for (let j = 0; j < 10; j++) {
+        row.push(new Block([i,j], 'empty'));
+      }
+      blocks.push(row);
+    }
+    this.blocks = blocks;
+  }
 
+  getBlock(coord) {
+    return this.blocks[coord[0]][coord[1]];
   }
 
 
@@ -10381,6 +10397,33 @@ if ( !noGlobal ) {
 
 return jQuery;
 } );
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+class Tetromino {
+
+}
+
+module.exports = 'Tetromino';
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+class Block {
+
+  constructor(coord, status) {
+    this.coord = coord;
+    this.status = status;
+  }
+
+}
+
+module.exports = Block;
 
 
 /***/ })
