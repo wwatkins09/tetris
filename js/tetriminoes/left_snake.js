@@ -17,6 +17,18 @@ class LeftSnake extends Tetrimino {
     }
   }
 
+  moveLeft() {
+    if (this.x > 0) {
+      this.x -= 40;
+    }
+  }
+
+  moveRight() {
+    if (this.x < 280) {
+      this.x += 40;
+    }
+  }
+
 }
 
 module.exports = LeftSnake;
