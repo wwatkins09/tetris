@@ -2,8 +2,8 @@ const Tetrimino = require('../tetrimino.js');
 
 class LeftSnake extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'red';
   }
 
@@ -27,6 +27,10 @@ class LeftSnake extends Tetrimino {
     if ((this.x * 40) < 280) {
       this.x += 1;
     }
+  }
+
+  canMove() {
+    return (this.y < 18 && this.getBlocksBelow().length === 0)
   }
 
 }

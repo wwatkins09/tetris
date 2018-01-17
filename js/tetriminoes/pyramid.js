@@ -27,19 +27,9 @@ class Pyramid extends Tetrimino {
   }
 
   canMove() {
-    console.log(this.y);
     return (this.y < 19 && this.getBlocksBelow().length === 0)
   }
 
-  getBlocksBelow() {
-    let result = [];
-    this.well.blocks[this.y + 1].forEach((block) => {
-      if (block.status === 'filled') {
-        result.push(block);
-      }
-    });
-    return result
-  }
 
 }
 

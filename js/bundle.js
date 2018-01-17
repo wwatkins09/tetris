@@ -139,11 +139,23 @@ class Tetrimino {
     this.x = 0;
     this.y = 0;
     this.move = this.move.bind(this);
+
+    this.getBlocksBelow = this.getBlocksBelow.bind(this);
   }
 
   move() {
 
 
+  }
+
+  getBlocksBelow() {
+    let result = [];
+    this.well.blocks[this.y + 1].forEach((block) => {
+      if (block.status === 'filled') {
+        result.push(block);
+      }
+    });
+    return result
   }
 
 }
@@ -175,8 +187,8 @@ const Tetrimino = __webpack_require__(4);
 
 class Alpha extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     this.y += 1;
     ctx.fillStyle = 'orange';
   }
@@ -203,6 +215,10 @@ class Alpha extends Tetrimino {
     }
   }
 
+  canMove() {
+    return (this.y < 19 && this.getBlocksBelow().length === 0)
+  }
+
 }
 
 module.exports = Alpha;
@@ -216,8 +232,8 @@ const Tetrimino = __webpack_require__(4);
 
 class Square extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'yellow';
   }
 
@@ -240,6 +256,10 @@ class Square extends Tetrimino {
     if ((this.x * 40) < 320) {
       this.x += 1;
     }
+  }
+
+  canMove() {
+    return (this.y < 18 && this.getBlocksBelow().length === 0)
   }
 
 }
@@ -280,19 +300,9 @@ class Pyramid extends Tetrimino {
   }
 
   canMove() {
-    console.log(this.y);
     return (this.y < 19 && this.getBlocksBelow().length === 0)
   }
 
-  getBlocksBelow() {
-    let result = [];
-    this.well.blocks[this.y + 1].forEach((block) => {
-      if (block.status === 'filled') {
-        result.push(block);
-      }
-    });
-    return result
-  }
 
 }
 
@@ -307,8 +317,8 @@ const Tetrimino = __webpack_require__(4);
 
 class Gamma extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'blue';
   }
 
@@ -334,6 +344,10 @@ class Gamma extends Tetrimino {
     }
   }
 
+  canMove() {
+    return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
 }
 
 module.exports = Gamma;
@@ -347,8 +361,8 @@ const Tetrimino = __webpack_require__(4);
 
 class LeftSnake extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'red';
   }
 
@@ -374,6 +388,10 @@ class LeftSnake extends Tetrimino {
     }
   }
 
+  canMove() {
+    return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
 }
 
 module.exports = LeftSnake;
@@ -387,8 +405,8 @@ const Tetrimino = __webpack_require__(4);
 
 class RightSnake extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'green';
   }
 
@@ -414,6 +432,10 @@ class RightSnake extends Tetrimino {
     }
   }
 
+  canMove() {
+    return (this.y < 19 && this.getBlocksBelow().length === 0)
+  }
+
 }
 
 module.exports = RightSnake;
@@ -427,8 +449,8 @@ const Tetrimino = __webpack_require__(4);
 
 class Straight extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'cyan';
   }
 
@@ -453,8 +475,8 @@ class Straight extends Tetrimino {
     }
   }
 
-  cantMove() {
-    
+  canMove() {
+    return (this.y < 19 && this.getBlocksBelow().length === 0)
   }
 
 }
@@ -500,7 +522,7 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new Pyramid(this.ctx, this.well);
+    this.currentTetrimino = new Square(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 

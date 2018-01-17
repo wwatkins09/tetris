@@ -2,8 +2,8 @@ const Tetrimino = require('../tetrimino.js');
 
 class Straight extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'cyan';
   }
 
@@ -28,8 +28,8 @@ class Straight extends Tetrimino {
     }
   }
 
-  cantMove() {
-    
+  canMove() {
+    return (this.y < 19 && this.getBlocksBelow().length === 0)
   }
 
 }

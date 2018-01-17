@@ -2,8 +2,8 @@ const Tetrimino = require('../tetrimino.js');
 
 class Square extends Tetrimino {
 
-  constructor(ctx) {
-    super(ctx);
+  constructor(ctx, well) {
+    super(ctx, well);
     ctx.fillStyle = 'yellow';
   }
 
@@ -26,6 +26,10 @@ class Square extends Tetrimino {
     if ((this.x * 40) < 320) {
       this.x += 1;
     }
+  }
+
+  canMove() {
+    return (this.y < 18 && this.getBlocksBelow().length === 0)
   }
 
 }
