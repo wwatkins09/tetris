@@ -13,7 +13,7 @@ class Game {
 
 
   constructor(ctx) {
-    this.currentTetrimino = new LeftSnake(ctx);
+    this.currentTetrimino = new Square(ctx);
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
 
     document.addEventListener('keydown', this.handleHorizontalMovement)
