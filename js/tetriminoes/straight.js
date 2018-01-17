@@ -8,7 +8,7 @@ class Straight extends Tetrimino {
   }
 
   move() {
-    this.ctx.clearRect(0, 0, 400, 800);
+    this.ctx.clearRect((this.x * 40), (this.y * 40), 160, 40);
     this.y = this.y + 1;
     this.ctx.fillRect((this.x * 40), (this.y * 40), 160, 40);
     if ((this.y * 40) === 760) {

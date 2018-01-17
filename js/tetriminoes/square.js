@@ -8,7 +8,7 @@ class Square extends Tetrimino {
   }
 
   move() {
-    this.ctx.clearRect(0, 0, 400, 800);
+    this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 80);
     this.y = this.y + 1;
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 80);
     if ((this.y * 40) === 720) {
