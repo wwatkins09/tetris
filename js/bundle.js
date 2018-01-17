@@ -83,6 +83,10 @@ const Tetrimino = __webpack_require__(4);
 const Alpha = __webpack_require__(6);
 const Square = __webpack_require__(7);
 const Pyramid = __webpack_require__(8);
+const Gamma = __webpack_require__(9);
+const LeftSnake = __webpack_require__(10);
+const RightSnake = __webpack_require__(11);
+const Straight = __webpack_require__(12);
 
 class View {
 
@@ -91,7 +95,7 @@ class View {
     canvasEl.height = 800;
     canvasEl.width = 400;
     const ctx = canvasEl.getContext('2d');
-    new Pyramid(ctx);
+    new Straight(ctx);
   }
 
 }
@@ -254,6 +258,118 @@ class Pyramid extends Tetrimino {
 }
 
 module.exports = Pyramid;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class Gamma extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    ctx.fillStyle = 'blue';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 40, 40);
+    this.ctx.fillRect((this.x), (this.y + 40), 120, 40)
+    if (this.y === 720) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = Gamma;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class LeftSnake extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    ctx.fillStyle = 'red';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 80, 40);
+    this.ctx.fillRect((this.x + 40), (this.y + 40), 80, 40)
+    if (this.y === 720) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = LeftSnake;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class RightSnake extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    this.x += 40;
+    ctx.fillStyle = 'green';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 80, 40);
+    this.ctx.fillRect((this.x - 40), (this.y + 40), 80, 40)
+    if (this.y === 720) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = RightSnake;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Tetrimino = __webpack_require__(4);
+
+class Straight extends Tetrimino {
+
+  constructor(ctx) {
+    super(ctx);
+    ctx.fillStyle = 'cyan';
+  }
+
+  move() {
+    this.ctx.clearRect(0, 0, 400, 800);
+    this.y = this.y + 40;
+    this.ctx.fillRect(this.x, this.y, 160, 40);
+    if (this.y === 760) {
+      clearInterval(this.falling);
+    }
+  }
+
+}
+
+module.exports = Straight;
 
 
 /***/ })
