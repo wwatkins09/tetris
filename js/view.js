@@ -12,9 +12,9 @@ class View {
   createGrid() {
     let newHtml = '';
     for (let i = 0; i < 20; i++) {
-      newHtml += "<ul>";
+      newHtml += "<ul class='row'>";
       for (let j = 0; j < 10; j++) {
-        newHtml += "<li></li>";
+        newHtml += "<li class='square empty'></li>";
       }
       newHtml += "</ul>";
     }
