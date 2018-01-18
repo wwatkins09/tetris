@@ -33,7 +33,7 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new Square(this.ctx, this.well);
+    this.currentTetrimino = new RightSnake(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 100);
   }
 
