@@ -26,6 +26,7 @@ class Game {
     if (this.currentTetrimino.canMove()) {
       this.currentTetrimino.move('down');
     } else {
+      this.currentTetrimino.setFinalPosition();
       clearInterval(this.falling)
       this.setupNewPiece();
     }
@@ -33,7 +34,7 @@ class Game {
 
   setupNewPiece() {
     this.currentTetrimino = new Straight(this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 500);
+    this.falling = window.setInterval(this.handleVerticalMovement, 100);
   }
 
   handleHorizontalMovement(event) {

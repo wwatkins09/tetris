@@ -106,9 +106,9 @@ class Well {
 
   constructor() {
     let blocks = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       let row = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 20; j++) {
         row.push(new Block([i,j]));
       }
       blocks.push(row);
@@ -118,6 +118,10 @@ class Well {
 
   getBlock(coord) {
     return this.blocks[coord[0]][coord[1]];
+  }
+
+  assignBlockStatus(coord, status) {
+    this.blocks[coord[0]][coord[1]].status = status;
   }
 
 
@@ -141,6 +145,7 @@ class Tetrimino {
     this.move = this.move.bind(this);
     this.rerender = this.rerender.bind(this);
     this.area = [];
+    this.blockCoords = [];
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
   }
@@ -163,12 +168,19 @@ class Tetrimino {
 
   getBlocksBelow() {
     let result = [];
-    this.well.blocks[this.y + 1].forEach((block) => {
-      if (block.status === 'filled') {
-        result.push(block);
+    this.blockCoords.forEach((coord) => {
+      let lowerCoord = [coord[0], (coord[1] + 1)]
+      if (this.well.getBlock(lowerCoord).status === 'filled') {
+        result.push(this.well.getBlock(lowerCoord));
       }
     });
     return result
+  }
+
+  setFinalPosition() {
+    this.blockCoords.forEach((coord) => {
+      this.well.assignBlockStatus(coord, 'filled');
+    })
   }
 
 }
@@ -396,12 +408,17 @@ class Straight extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'cyan';
     this.area = [4, 1];
+    this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
   }
 
   rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 160, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 160, 40);
   }
 
@@ -446,6 +463,7 @@ class Game {
     if (this.currentTetrimino.canMove()) {
       this.currentTetrimino.move('down');
     } else {
+      this.currentTetrimino.setFinalPosition();
       clearInterval(this.falling)
       this.setupNewPiece();
     }
@@ -453,7 +471,7 @@ class Game {
 
   setupNewPiece() {
     this.currentTetrimino = new Straight(this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 500);
+    this.falling = window.setInterval(this.handleVerticalMovement, 100);
   }
 
   handleHorizontalMovement(event) {

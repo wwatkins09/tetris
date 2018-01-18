@@ -5,9 +5,9 @@ class Well {
 
   constructor() {
     let blocks = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       let row = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 20; j++) {
         row.push(new Block([i,j]));
       }
       blocks.push(row);
@@ -17,6 +17,10 @@ class Well {
 
   getBlock(coord) {
     return this.blocks[coord[0]][coord[1]];
+  }
+
+  assignBlockStatus(coord, status) {
+    this.blocks[coord[0]][coord[1]].status = status;
   }
 
 
