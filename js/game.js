@@ -9,6 +9,8 @@ const RightSnake = require('./tetriminoes/right_snake.js');
 const Straight = require('./tetriminoes/straight.js');
 
 
+const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straight];
+
 class Game {
 
 
@@ -33,7 +35,7 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new Straight(this.ctx, this.well);
+    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
@@ -44,6 +46,10 @@ class Game {
     if (event.key === "ArrowRight" && this.currentTetrimino.canMoveRight()) {
       this.currentTetrimino.move('right');
     }
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
 
