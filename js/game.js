@@ -23,7 +23,7 @@ class Game {
   }
 
   handleVerticalMovement() {
-    if (this.currentTetrimino.canMove()) {
+    if (this.currentTetrimino.canMoveDown()) {
       this.currentTetrimino.move('down');
     } else {
       this.currentTetrimino.setFinalPosition();
@@ -33,15 +33,15 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new RightSnake(this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 100);
+    this.currentTetrimino = new Straight(this.ctx, this.well);
+    this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
   handleHorizontalMovement(event) {
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft" && this.currentTetrimino.canMoveLeft()) {
       this.currentTetrimino.move('left');
     }
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowRight" && this.currentTetrimino.canMoveRight()) {
       this.currentTetrimino.move('right');
     }
   }

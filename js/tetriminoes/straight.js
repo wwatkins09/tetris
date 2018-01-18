@@ -20,8 +20,20 @@ class Straight extends Tetrimino {
     this.ctx.fillRect((this.x * 40), (this.y * 40), 160, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 19 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), this.y]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 4) < 10 &&
+      this.well.getBlock([(this.x + 4), this.y]).status === 'empty'
+    );
   }
 
 }

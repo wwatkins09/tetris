@@ -232,8 +232,21 @@ class Alpha extends Tetrimino {
     this.ctx.fillRect(((this.x + 2) * 40), ((this.y) * 40), 40, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
+    );
   }
 
 }
@@ -267,8 +280,22 @@ class Square extends Tetrimino {
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 80);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 2) < 10 &&
+      this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
+    );
   }
 
 }
@@ -304,8 +331,20 @@ class Pyramid extends Tetrimino {
     this.ctx.fillRect(((this.x + 1) * 40), (this.y * 40), 40, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
+    );
   }
 
 
@@ -342,8 +381,21 @@ class Gamma extends Tetrimino {
     this.ctx.fillRect((this.x * 40), ((this.y + 1) * 40), 120, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
+    );
   }
 
 }
@@ -379,8 +431,22 @@ class LeftSnake extends Tetrimino {
     this.ctx.fillRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
+      this.well.getBlock([this.x, (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty' &&
+      this.well.getBlock([(this.x + 2), this.y]).status === 'empty'
+    );
   }
 
 }
@@ -416,8 +482,21 @@ class RightSnake extends Tetrimino {
     this.ctx.fillRect(((this.x + 1) * 40), (this.y * 40), 80, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
+    );
   }
 
 }
@@ -451,8 +530,20 @@ class Straight extends Tetrimino {
     this.ctx.fillRect((this.x * 40), (this.y * 40), 160, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 19 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), this.y]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 4) < 10 &&
+      this.well.getBlock([(this.x + 4), this.y]).status === 'empty'
+    );
   }
 
 }
@@ -489,7 +580,7 @@ class Game {
   }
 
   handleVerticalMovement() {
-    if (this.currentTetrimino.canMove()) {
+    if (this.currentTetrimino.canMoveDown()) {
       this.currentTetrimino.move('down');
     } else {
       this.currentTetrimino.setFinalPosition();
@@ -499,15 +590,15 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new RightSnake(this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 100);
+    this.currentTetrimino = new Straight(this.ctx, this.well);
+    this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
   handleHorizontalMovement(event) {
-    if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft" && this.currentTetrimino.canMoveLeft()) {
       this.currentTetrimino.move('left');
     }
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowRight" && this.currentTetrimino.canMoveRight()) {
       this.currentTetrimino.move('right');
     }
   }

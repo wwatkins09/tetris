@@ -22,8 +22,21 @@ class RightSnake extends Tetrimino {
     this.ctx.fillRect(((this.x + 1) * 40), (this.y * 40), 80, 40);
   }
 
-  canMove() {
+  canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
+  }
+
+  canMoveLeft() {
+    return (this.x > 0 &&
+      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
+    );
+  }
+
+  canMoveRight() {
+    return ((this.x + 3) < 10 &&
+      this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
+      this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
+    );
   }
 
 }
