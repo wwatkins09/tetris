@@ -217,6 +217,7 @@ class Alpha extends Tetrimino {
     this.y += 1;
     ctx.fillStyle = 'orange';
     this.area = [3, 2];
+    this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
   }
 
   rerender(arr) {
@@ -224,6 +225,10 @@ class Alpha extends Tetrimino {
     this.ctx.clearRect(((this.x + 2) * 40), ((this.y - 1) * 40), 40, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 120, 40);
     this.ctx.fillRect(((this.x + 2) * 40), ((this.y - 1) * 40), 40, 40);
   }
@@ -249,12 +254,17 @@ class Square extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'yellow';
     this.area = [2, 2]
+    this.blockCoords = [[0, 0], [1, 0], [0, 1], [1, 1]];
   }
 
   rerender(arr) {
     this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 80);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 80);
   }
 
@@ -279,6 +289,8 @@ class Pyramid extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'magenta';
     this.area = [3, 2]
+    // fix negative number glitch!
+    this.blockCoords = [[0, 0], [1, -1], [1, 0], [2, 0]]
   }
 
   rerender(arr) {
@@ -286,6 +298,10 @@ class Pyramid extends Tetrimino {
     this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 120, 40);
     this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 40, 40);
   }
@@ -312,6 +328,7 @@ class Gamma extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'blue';
     this.area = [3, 2];
+    this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]]
   }
 
   rerender(arr) {
@@ -319,6 +336,10 @@ class Gamma extends Tetrimino {
     this.ctx.clearRect(((this.x) * 40), ((this.y + 1) * 40), 120, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 40, 40);
     this.ctx.fillRect((this.x * 40), ((this.y + 1) * 40), 120, 40);
   }
@@ -344,6 +365,7 @@ class LeftSnake extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'red';
     this.area = [3, 2];
+    this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]]
   }
 
   rerender(arr) {
@@ -351,6 +373,10 @@ class LeftSnake extends Tetrimino {
     this.ctx.clearRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 40);
     this.ctx.fillRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
   }
@@ -376,6 +402,8 @@ class RightSnake extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'green';
     this.area = [3, 2];
+    // fix negative number glitch!
+    this.blockCoords = [[0, 0], [1, -1], [1, 0], [2, -1]];
   }
 
   rerender(arr) {
@@ -383,6 +411,10 @@ class RightSnake extends Tetrimino {
     this.ctx.clearRect(((this.x + 1) * 40), ((this.y - 1) * 40), 80, 40);
     this.x += arr[0];
     this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+    });
     this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 40);
     this.ctx.fillRect(((this.x + 1) * 40), ((this.y - 1) * 40), 80, 40);
   }
@@ -470,7 +502,7 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new Straight(this.ctx, this.well);
+    this.currentTetrimino = new Square(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 100);
   }
 
