@@ -343,19 +343,11 @@ class Pyramid extends Tetrimino {
   }
 
   canMoveDown() {
-    if (this.rotationPos === 0) {
+    if (this.rotationPos % 2 === 0) {
       return (this.y < 18 && this.getBlocksBelow().length === 0);
     }
 
-    if (this.rotationPos === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0);
-    }
-
-    if (this.rotationPos === 2) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0)
-    }
-
-    if (this.rotationPos === 3) {
+    if (this.rotationPos % 2 === 1) {
       return (this.y < 17 && this.getBlocksBelow().length === 0);
     }
   }
