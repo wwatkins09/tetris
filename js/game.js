@@ -28,23 +28,33 @@ class Game {
     if (this.currentTetrimino.canMoveDown()) {
       this.currentTetrimino.move('down');
     } else {
-      this.currentTetrimino.setFinalPosition();
       clearInterval(this.falling)
+      this.currentTetrimino.setFinalPosition();
       this.setupNewPiece();
     }
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+    // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+    this.currentTetrimino = new Pyramid(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
   handleHorizontalMovement(event) {
-    if (event.key === "ArrowLeft" && this.currentTetrimino.canMoveLeft()) {
+    if (event.key.includes("Arrow")) {
+      event.preventDefault();
+    }
+    if (event.key === "a" && this.currentTetrimino.canMoveLeft()) {
       this.currentTetrimino.move('left');
     }
-    if (event.key === "ArrowRight" && this.currentTetrimino.canMoveRight()) {
+    if (event.key === "d" && this.currentTetrimino.canMoveRight()) {
       this.currentTetrimino.move('right');
+    }
+    if (event.key === "q") {
+      this.currentTetrimino.rotateCounterClockwise();
+    }
+    if (event.key === "e") {
+      this.currentTetrimino.rotateClockwise();
     }
   }
 

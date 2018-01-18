@@ -12,9 +12,11 @@ class Tetrimino {
     this.rerender = this.rerender.bind(this);
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
+    this.setFinalPosition = this.setFinalPosition.bind(this);
   }
 
   move(dir) {
+    this.clear();
     if (dir === 'down') {
       this.rerender([0, 1]);
     }
@@ -53,6 +55,12 @@ class Tetrimino {
 
   rotateCounterClockwise() {
 
+  }
+
+  clear() {
+    this.blockCoords.forEach((coord) => {
+      this.ctx.clearRect((coord[0] * 40), (coord[1] * 40), 40, 40);
+    });
   }
 
 }
