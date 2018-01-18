@@ -5,7 +5,6 @@ class Gamma extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     ctx.fillStyle = 'blue';
-    this.area = [3, 2];
     this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]]
   }
 
