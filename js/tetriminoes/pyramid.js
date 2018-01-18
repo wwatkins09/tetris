@@ -58,41 +58,66 @@ class Pyramid extends Tetrimino {
     return result;
   }
 
-  rotateClockwise() {
-    let clockwiseCoords;
+  rotate(dir) {
+    let rotationCoords;
     let newBlockCoords = [[], [], [], []]
     let canRotate = true;
     let xFactor;
     let yFactor;
+    const dirFactor = (dir === 'clockwise') ? 1 : -1;
 
     if (this.rotationPos === 0) {
-      xFactor = 1;
-      yFactor = 0;
-      clockwiseCoords = [[0, 0], [1, -1], [1, 1], [-1, 1]]
+      if (dirFactor === 1) {
+        xFactor = 1;
+        yFactor = 0;
+        rotationCoords = [[0, 0], [1, -1], [1, 1], [-1, 1]];
+      } else {
+        xFactor = 0;
+        yFactor = 0;
+        rotationCoords = [[0, 0], [1, 1], [-1, 1], [-1, -1]];
+      }
 
     }
 
     if (this.rotationPos === 1) {
-      xFactor = -1;
-      yFactor = 1;
-      clockwiseCoords = [[0, 0], [1, 1], [-1, 1], [-1, -1]]
+      if (dirFactor === 1) {
+        xFactor = -1
+        yFactor = 1
+        rotationCoords = [[0, 0], [1, 1], [-1, 1], [-1, -1]];
+      } else {
+        xFactor = -1;
+        yFactor = 0;
+        rotationCoords = [[0, 0], [-1, 1], [-1, -1], [1, -1]];
+      }
     }
 
     if (this.rotationPos === 2) {
-      xFactor = 0;
-      yFactor = -1;
-      clockwiseCoords = [[0, 0], [-1, 1], [-1, -1], [1, -1]]
+      if (dirFactor === 1) {
+        xFactor = 0;
+        yFactor = -1;
+        rotationCoords = [[0, 0], [-1, 1], [-1, -1], [1, -1]];
+      } else {
+        xFactor = 1;
+        yFactor = -1;
+        rotationCoords = [[0, 0], [-1, -1], [1, -1], [1, 1]];
+      }
     }
 
     if (this.rotationPos === 3) {
-      xFactor = 0;
-      yFactor = 0;
-      clockwiseCoords = [[0, 0], [-1, -1], [1, -1], [1, 1]]
+      if (dirFactor === 1) {
+        xFactor = 0;
+        yFactor = 0;
+        rotationCoords = [[0, 0], [-1, -1], [1, -1], [1, 1]];
+      } else {
+        xFactor = 0;
+        yFactor = 1;
+        rotationCoords = [[0, 0], [1, -1], [1, 1], [-1, 1]]
+      }
     }
 
     for (let i = 0; i < 4; i++) {
-      newBlockCoords[i][0] = this.blockCoords[i][0] + clockwiseCoords[i][0];
-      newBlockCoords[i][1] = this.blockCoords[i][1] + clockwiseCoords[i][1];
+      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
+      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
     }
     newBlockCoords.forEach((coord) => {
       if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
@@ -102,7 +127,11 @@ class Pyramid extends Tetrimino {
     if (canRotate) {
       this.clear();
       this.blockCoords = newBlockCoords;
-      this.rotationPos = (this.rotationPos + 1) % 4
+      if (this.rotationPos > 0) {
+        this.rotationPos = (this.rotationPos + dirFactor) % 4
+      } else {
+        this.rotationPos = (this.rotationPos + dirFactor + 4) % 4
+      }
       this.x += xFactor;
       this.y += yFactor;
       this.rerender([0, 0]);

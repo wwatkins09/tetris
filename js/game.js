@@ -25,6 +25,8 @@ class Game {
   }
 
   handleVerticalMovement() {
+    if (this.currentTetrimino.rotationPos === 2) {
+    }
     if (this.currentTetrimino.canMoveDown()) {
       this.currentTetrimino.move('down');
     } else {
@@ -51,10 +53,10 @@ class Game {
       this.currentTetrimino.move('right');
     }
     if (event.key === "q") {
-      this.currentTetrimino.rotateCounterClockwise();
+      this.currentTetrimino.rotate('counterClockwise');
     }
     if (event.key === "e") {
-      this.currentTetrimino.rotateClockwise();
+      this.currentTetrimino.rotate('clockwise');
     }
   }
 
