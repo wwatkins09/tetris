@@ -58,10 +58,11 @@ class Well {
     this.ctx.clearRect(0, 0, 400, 800);
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
-        this.ctx.fillStyle = block.color;
-        this.ctx.fillRect(((idx2 * 40)), ((idx1 * 40)), 40, 40)
         if (block.color != 'white') {
-          this.ctx.strokeRect((idx2 * 40), idx1 * 40, 40, 40);
+        this.ctx.fillStyle = block.color;
+        this.ctx.strokeStyle = 'black';
+        this.ctx.fillRect(((idx2 * 40)), ((idx1 * 40)), 40, 40)
+          this.ctx.strokeRect((idx2 * 40), (idx1 * 40), 40, 40);
         }
       });
     });

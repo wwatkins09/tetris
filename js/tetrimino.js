@@ -10,37 +10,37 @@ class Tetrimino {
     this.color = '';
 
     this.move = this.move.bind(this);
-    this.rerender = this.rerender.bind(this);
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
   }
 
   move(dir) {
+    this.clear();
+    let arr;
     if (dir === 'down') {
-      this.rerender([0, 1]);
+      arr = [0, 1];
     }
     if (dir === 'left') {
-      this.rerender([-1, 0]);
+      arr = [-1, 0];
     }
     if (dir === 'right') {
-      this.rerender([1, 0]);
+      arr = [1, 0];
     }
-  }
-
-  rerender(arr) {
-    this.clear();
-    this.ctx.fillStyle = this.color;
+    if (dir === 'rotate') {
+      arr = [0, 0];
+    }
     this.x += arr[0];
     this.y += arr[1];
     this.blockCoords.forEach((coord) => {
       coord[0] += arr[0];
       coord[1] += arr[1];
-      this.ctx.fillRect(((coord[0] * 40)), ((coord[1] * 40)), 40, 40)
-      this.ctx.strokeRect((coord[0] * 40), coord[1] * 40, 40, 40);
+      this.well.assignBlockColor(coord, this.color);
+      // this.ctx.fillRect(((coord[0] * 40)), ((coord[1] * 40)), 40, 40)
+      // this.ctx.strokeRect((coord[0] * 40), coord[1] * 40, 40, 40);
     });
+    this.well.rerenderWell();
   }
-
 
   getBlocksBelow() {
     let result = [];
@@ -91,8 +91,15 @@ class Tetrimino {
       this.rotationPos = (this.rotationPos + rotationPosFactor) % 4
       this.x += xFactor;
       this.y += yFactor;
-      this.rerender([0, 0]);
+      this.move('rotate');
     }
+  }
+
+
+  clear() {
+    this.blockCoords.forEach((coord) => {
+      this.well.assignBlockColor(coord, 'white');
+    });
   }
 
   rotateClockwise() {
@@ -102,13 +109,6 @@ class Tetrimino {
   rotateCounterClockwise() {
 
   }
-
-  clear() {
-    this.blockCoords.forEach((coord) => {
-      this.ctx.clearRect(((coord[0] * 40) - 1), ((coord[1] * 40) - 1), 42, 42);
-    });
-  }
-
 }
 
 module.exports = Tetrimino;
