@@ -124,6 +124,10 @@ class Well {
     this.blocks[coord[0]][coord[1]].status = status;
   }
 
+  assignBlockColor(coord, color) {
+    this.blocks[coord[0]][coord[1]].color = color;
+  }
+
 
 }
 
@@ -193,7 +197,8 @@ class Tetrimino {
   setFinalPosition() {
     this.blockCoords.forEach((coord) => {
       this.well.assignBlockStatus(coord, 'filled');
-    })
+      this.well.assignBlockColor(coord, this.color);
+    });
   }
 
   handleRotation(dir) {
@@ -259,6 +264,7 @@ class Block {
   constructor(coord) {
     this.coord = coord;
     this.status = 'empty';
+    this.color = 'white';
   }
 
 }

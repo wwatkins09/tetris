@@ -23,6 +23,10 @@ class Well {
     this.blocks[coord[0]][coord[1]].status = status;
   }
 
+  assignBlockColor(coord, color) {
+    this.blocks[coord[0]][coord[1]].color = color;
+  }
+
 
 }
 

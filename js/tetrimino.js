@@ -56,7 +56,8 @@ class Tetrimino {
   setFinalPosition() {
     this.blockCoords.forEach((coord) => {
       this.well.assignBlockStatus(coord, 'filled');
-    })
+      this.well.assignBlockColor(coord, this.color);
+    });
   }
 
   handleRotation(dir) {
