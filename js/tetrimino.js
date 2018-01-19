@@ -49,12 +49,47 @@ class Tetrimino {
     })
   }
 
+  handleRotation(dir) {
+    let newBlockCoords = [[], [], [], []];
+    let canRotate = true;
+    let rotateResults;
+    let rotationPosFactor;
+    if (dir === 'clockwise') {
+      rotateResults = this.rotateClockwise()
+      rotationPosFactor = 1;
+    } else {
+      rotateResults = this.rotateCounterClockwise();
+      rotationPosFactor = 3;
+    }
+    let xFactor = rotateResults.xFactor;
+    let yFactor = rotateResults.yFactor;
+    let rotationCoords = rotateResults.rotationCoords;
+
+    for (let i = 0; i < 4; i++) {
+      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
+      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
+    }
+    newBlockCoords.forEach((coord) => {
+      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
+        canRotate = false
+      }
+    });
+    if (canRotate) {
+      this.clear();
+      this.blockCoords = newBlockCoords;
+      this.rotationPos = (this.rotationPos + rotationPosFactor) % 4
+      this.x += xFactor;
+      this.y += yFactor;
+      this.rerender([0, 0]);
+    }
+  }
+
   rotateClockwise() {
 
   }
 
   rotateCounterClockwise() {
-    
+
   }
 
   clear() {

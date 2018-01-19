@@ -65,7 +65,6 @@ class Straight extends Tetrimino {
 
   rotateClockwise() {
     let rotationCoords;
-    let newBlockCoords = [[], [], [], []]
     let canRotate = true;
     let xFactor;
     let yFactor;
@@ -94,30 +93,12 @@ class Straight extends Tetrimino {
       rotationCoords = [[-1, -2], [0, -1], [1, 0], [2, 1]];
     }
 
-    for (let i = 0; i < 4; i++) {
-      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
-      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
-    }
-    newBlockCoords.forEach((coord) => {
-      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
-        canRotate = false
-      }
-    });
-    if (canRotate) {
-      this.clear();
-      this.blockCoords = newBlockCoords;
-      this.rotationPos = (this.rotationPos + 1) % 4
-      this.x += xFactor;
-      this.y += yFactor;
-      this.rerender([0, 0]);
-    } else {
-    }
+    return {xFactor, yFactor, rotationCoords}
 
   }
 
   rotateCounterClockwise() {
     let rotationCoords;
-    let newBlockCoords = [[], [], [], []]
     let canRotate = true;
     let xFactor;
     let yFactor;
@@ -146,24 +127,8 @@ class Straight extends Tetrimino {
       rotationCoords = [[2, -1], [1, 0], [0, 1], [-1, 2]];
     }
 
-    for (let i = 0; i < 4; i++) {
-      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
-      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
-    }
-    newBlockCoords.forEach((coord) => {
-      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
-        canRotate = false
-      }
-    });
-    if (canRotate) {
-      this.clear();
-      this.blockCoords = newBlockCoords;
-      this.rotationPos = (this.rotationPos + 3) % 4
-      this.x += xFactor;
-      this.y += yFactor;
-      this.rerender([0, 0]);
-    } else {
-    }
+    return {xFactor, yFactor, rotationCoords}
+
 
   }
 
