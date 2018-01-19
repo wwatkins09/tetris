@@ -38,7 +38,7 @@ class Game {
 
   setupNewPiece() {
     // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.currentTetrimino = new Straight(this.ctx, this.well);
+    this.currentTetrimino = new LeftSnake(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
