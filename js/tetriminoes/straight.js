@@ -4,7 +4,7 @@ class Straight extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'cyan';
+    this.color = 'cyan';
     this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
   }
 

@@ -4,7 +4,7 @@ class RightSnake extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'green';
+    this.color = 'green';
     this.blockCoords = [[0, 1], [1, 1], [1, 0], [2, 0]];
   }
 

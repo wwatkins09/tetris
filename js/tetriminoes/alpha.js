@@ -4,7 +4,7 @@ class Alpha extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'orange';
+    this.color = 'orange';
     this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
   }
 

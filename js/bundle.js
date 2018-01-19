@@ -144,6 +144,7 @@ class Tetrimino {
     this.y = 0;
     this.blockCoords = [];
     this.rotationPos = 0;
+    this.color = '';
 
     this.move = this.move.bind(this);
     this.rerender = this.rerender.bind(this);
@@ -153,7 +154,6 @@ class Tetrimino {
   }
 
   move(dir) {
-    this.clear();
     if (dir === 'down') {
       this.rerender([0, 1]);
     }
@@ -166,12 +166,15 @@ class Tetrimino {
   }
 
   rerender(arr) {
+    this.clear();
+    this.ctx.fillStyle = this.color;
     this.x += arr[0];
     this.y += arr[1];
     this.blockCoords.forEach((coord) => {
       coord[0] += arr[0];
       coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
+      this.ctx.fillRect(((coord[0] * 40)), ((coord[1] * 40)), 40, 40)
+      this.ctx.strokeRect((coord[0] * 40), coord[1] * 40, 40, 40);
     });
   }
 
@@ -238,7 +241,7 @@ class Tetrimino {
 
   clear() {
     this.blockCoords.forEach((coord) => {
-      this.ctx.clearRect((coord[0] * 40), (coord[1] * 40), 40, 40);
+      this.ctx.clearRect(((coord[0] * 40) - 1), ((coord[1] * 40) - 1), 42, 42);
     });
   }
 
@@ -273,7 +276,7 @@ class Alpha extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'orange';
+    this.color = 'orange';
     this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
   }
 
@@ -429,7 +432,7 @@ class Square extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'yellow';
+    this.color = 'yellow';
     this.blockCoords = [[0, 0], [1, 0], [0, 1], [1, 1]];
   }
 
@@ -470,7 +473,7 @@ class Pyramid extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'magenta';
+    this.color = 'magenta';
     this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]]
   }
 
@@ -596,7 +599,7 @@ class Gamma extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'blue';
+    this.color = 'blue';
     this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]];
   }
 
@@ -752,7 +755,7 @@ class LeftSnake extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'red';
+    this.color = 'red';
     this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]]
   }
 
@@ -909,7 +912,7 @@ class RightSnake extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'green';
+    this.color = 'green';
     this.blockCoords = [[0, 1], [1, 1], [1, 0], [2, 0]];
   }
 
@@ -1064,7 +1067,7 @@ class Straight extends Tetrimino {
 
   constructor(ctx, well) {
     super(ctx, well);
-    ctx.fillStyle = 'cyan';
+    this.color = 'cyan';
     this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
   }
 
