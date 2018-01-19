@@ -8,16 +8,6 @@ class Pyramid extends Tetrimino {
     this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]]
   }
 
-  rerender(arr) {
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
-    });
-  }
-
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
       return (this.y < 18 && this.getBlocksBelow().length === 0);

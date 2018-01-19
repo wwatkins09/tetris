@@ -28,9 +28,16 @@ class Tetrimino {
     }
   }
 
-    rerender() {
+  rerender(arr) {
+    this.x += arr[0];
+    this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
+    });
+  }
 
-    }
 
   getBlocksBelow() {
     let result = [];

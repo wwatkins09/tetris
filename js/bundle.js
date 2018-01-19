@@ -165,9 +165,16 @@ class Tetrimino {
     }
   }
 
-    rerender() {
+  rerender(arr) {
+    this.x += arr[0];
+    this.y += arr[1];
+    this.blockCoords.forEach((coord) => {
+      coord[0] += arr[0];
+      coord[1] += arr[1];
+      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
+    });
+  }
 
-    }
 
   getBlocksBelow() {
     let result = [];
@@ -268,16 +275,6 @@ class Alpha extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'orange';
     this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
-  }
-
-  rerender(arr) {
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
-    });
   }
 
   canMoveDown() {
@@ -482,16 +479,6 @@ class Pyramid extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'magenta';
     this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]]
-  }
-
-  rerender(arr) {
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
-    });
   }
 
   canMoveDown() {
@@ -703,16 +690,6 @@ class Gamma extends Tetrimino {
     this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]];
   }
 
-  rerender(arr) {
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), coord[1] * 40, 40, 40);
-    });
-  }
-
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
       return (this.y < 18 && this.getBlocksBelow().length === 0);
@@ -869,19 +846,6 @@ class LeftSnake extends Tetrimino {
     this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]]
   }
 
-  rerender(arr) {
-    this.ctx.clearRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.clearRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-    });
-    this.ctx.fillRect((this.x * 40), (this.y * 40), 80, 40);
-    this.ctx.fillRect(((this.x + 1) * 40), ((this.y + 1) * 40), 80, 40);
-  }
-
   canMoveDown() {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
   }
@@ -899,6 +863,7 @@ class LeftSnake extends Tetrimino {
       this.well.getBlock([(this.x + 2), this.y]).status === 'empty'
     );
   }
+
 
 }
 
@@ -966,17 +931,6 @@ class Straight extends Tetrimino {
     super(ctx, well);
     ctx.fillStyle = 'cyan';
     this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
-  }
-
-  rerender(arr) {
-    this.ctx.clearRect((this.x * 40), (this.y * 40), 160, 40);
-    this.x += arr[0];
-    this.y += arr[1];
-    this.blockCoords.forEach((coord) => {
-      coord[0] += arr[0];
-      coord[1] += arr[1];
-      this.ctx.fillRect((coord[0] * 40), (coord[1] * 40), 40, 40);
-    });
   }
 
   canMoveDown() {
@@ -1141,7 +1095,7 @@ class Game {
 
   setupNewPiece() {
     // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.currentTetrimino = new Gamma(this.ctx, this.well);
+    this.currentTetrimino = new Straight(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
