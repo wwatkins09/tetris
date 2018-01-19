@@ -53,10 +53,10 @@ class Game {
       this.currentTetrimino.move('right');
     }
     if (event.key === "q") {
-      this.currentTetrimino.rotateCounterClockwise();
+      this.currentTetrimino.handleRotation('counterClockwise');
     }
     if (event.key === "e") {
-      this.currentTetrimino.rotateClockwise();
+      this.currentTetrimino.handleRotation('clockwise');
     }
   }
 

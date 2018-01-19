@@ -382,9 +382,44 @@ class Pyramid extends Tetrimino {
     return result;
   }
 
+  handleRotation(dir) {
+    let newBlockCoords = [[], [], [], []];
+    let canRotate = true;
+    let rotateResults;
+    let rotationPosFactor;
+    if (dir === 'clockwise') {
+      rotateResults = this.rotateClockwise()
+      rotationPosFactor = 1;
+    } else {
+      rotateResults = this.rotateCounterClockwise();
+      rotationPosFactor = 3;
+    }
+    let xFactor = rotateResults.xFactor;
+    let yFactor = rotateResults.yFactor;
+    let rotationCoords = rotateResults.rotationCoords;
+
+    for (let i = 0; i < 4; i++) {
+      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
+      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
+    }
+    newBlockCoords.forEach((coord) => {
+      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
+        canRotate = false
+      }
+    });
+    if (canRotate) {
+      this.clear();
+      this.blockCoords = newBlockCoords;
+      this.rotationPos = (this.rotationPos + rotationPosFactor) % 4
+      this.x += xFactor;
+      this.y += yFactor;
+      this.rerender([0, 0]);
+    }
+
+  }
+
   rotateClockwise() {
     let rotationCoords;
-    let newBlockCoords = [[], [], [], []]
     let canRotate = true;
     let xFactor;
     let yFactor;
@@ -412,28 +447,12 @@ class Pyramid extends Tetrimino {
         yFactor = 0;
         rotationCoords = [[0, 0], [-1, -1], [1, -1], [1, 1]];
     }
-    for (let i = 0; i < 4; i++) {
-      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
-      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
-    }
-    newBlockCoords.forEach((coord) => {
-      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
-        canRotate = false
-      }
-    });
-    if (canRotate) {
-      this.clear();
-      this.blockCoords = newBlockCoords;
-      this.rotationPos = (this.rotationPos + 1) % 4
-      this.x += xFactor;
-      this.y += yFactor;
-      this.rerender([0, 0]);
-    }
+
+    return {xFactor, yFactor, rotationCoords}
   }
 
   rotateCounterClockwise() {
     let rotationCoords;
-    let newBlockCoords = [[], [], [], []]
     let canRotate = true;
     let xFactor;
     let yFactor;
@@ -462,24 +481,7 @@ class Pyramid extends Tetrimino {
         rotationCoords = [[0, 0], [1, -1], [1, 1], [-1, 1]]
     }
 
-    for (let i = 0; i < 4; i++) {
-      newBlockCoords[i][0] = this.blockCoords[i][0] + rotationCoords[i][0];
-      newBlockCoords[i][1] = this.blockCoords[i][1] + rotationCoords[i][1];
-    }
-    newBlockCoords.forEach((coord) => {
-      if (coord[0] < 0 || coord[0] > 9 || coord[1] < 0 || coord[1] > 19 || this.well.getBlock(coord).status === 'filled') {
-        canRotate = false
-      }
-    });
-    if (canRotate) {
-      this.clear();
-      this.blockCoords = newBlockCoords;
-      this.rotationPos = (this.rotationPos + 3) % 4
-      this.x += xFactor;
-      this.y += yFactor;
-      this.rerender([0, 0]);
-    } else {
-    }
+    return {xFactor, yFactor, rotationCoords}
 
   }
 
@@ -955,10 +957,10 @@ class Game {
       this.currentTetrimino.move('right');
     }
     if (event.key === "q") {
-      this.currentTetrimino.rotateCounterClockwise();
+      this.currentTetrimino.handleRotation('counterClockwise');
     }
     if (event.key === "e") {
-      this.currentTetrimino.rotateClockwise();
+      this.currentTetrimino.handleRotation('clockwise');
     }
   }
 
