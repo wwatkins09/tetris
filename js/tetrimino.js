@@ -49,7 +49,11 @@ class Tetrimino {
     })
   }
 
-  rotate(dir) {
+  rotateClockwise() {
+
+  }
+
+  rotateCounterClockwise() {
     
   }
 
