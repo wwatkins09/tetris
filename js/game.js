@@ -18,20 +18,19 @@ class Game {
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
-    this.well = new Well();
+    this.well = new Well(ctx);
     this.ctx = ctx;
     this.setupNewPiece();
     document.addEventListener('keydown', this.handleHorizontalMovement)
   }
 
   handleVerticalMovement() {
-    if (this.currentTetrimino.rotationPos === 2) {
-    }
     if (this.currentTetrimino.canMoveDown()) {
       this.currentTetrimino.move('down');
     } else {
       clearInterval(this.falling)
       this.currentTetrimino.setFinalPosition();
+      this.well.checkForFullRow();
       this.setupNewPiece();
     }
   }
