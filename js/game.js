@@ -38,7 +38,7 @@ class Game {
 
   setupNewPiece() {
     // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.currentTetrimino = new Pyramid(this.ctx, this.well);
+    this.currentTetrimino = new Straight(this.ctx, this.well);
     this.falling = window.setInterval(this.handleVerticalMovement, 500);
   }
 
@@ -53,10 +53,10 @@ class Game {
       this.currentTetrimino.move('right');
     }
     if (event.key === "q") {
-      this.currentTetrimino.rotate('counterClockwise');
+      this.currentTetrimino.rotateCounterClockwise();
     }
     if (event.key === "e") {
-      this.currentTetrimino.rotate('clockwise');
+      this.currentTetrimino.rotateClockwise();
     }
   }
 

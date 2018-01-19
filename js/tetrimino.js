@@ -49,12 +49,8 @@ class Tetrimino {
     })
   }
 
-  rotateClockwise() {
-
-  }
-
-  rotateCounterClockwise() {
-
+  rotate(dir) {
+    
   }
 
   clear() {
