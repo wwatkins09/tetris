@@ -6,6 +6,8 @@ class Straight extends Tetrimino {
     super(ctx, well);
     this.color = 'cyan';
     this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {

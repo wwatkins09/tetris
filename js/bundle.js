@@ -195,6 +195,7 @@ class Tetrimino {
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
+    this.checkIfGameOver = this.checkIfGameOver.bind(this);
   }
 
   move(dir) {
@@ -209,7 +210,7 @@ class Tetrimino {
     if (dir === 'right') {
       arr = [1, 0];
     }
-    if (dir === 'rotate') {
+    if (dir === 'rotate' || dir === 'none') {
       arr = [0, 0];
     }
     this.x += arr[0];
@@ -218,8 +219,6 @@ class Tetrimino {
       coord[0] += arr[0];
       coord[1] += arr[1];
       this.well.assignBlockColor(coord, this.color);
-      // this.ctx.fillRect(((coord[0] * 40)), ((coord[1] * 40)), 40, 40)
-      // this.ctx.strokeRect((coord[0] * 40), coord[1] * 40, 40, 40);
     });
     this.well.rerenderWell();
   }
@@ -291,6 +290,18 @@ class Tetrimino {
   rotateCounterClockwise() {
 
   }
+
+  checkIfGameOver() {
+    this.blockCoords.forEach((coord) => {
+      if (this.well.getBlock(coord).status === 'filled') {
+        this.gameOver();
+      }
+    });
+  }
+
+  gameOver() {
+    console.log("Over!!");
+  }
 }
 
 module.exports = Tetrimino;
@@ -325,6 +336,8 @@ class Alpha extends Tetrimino {
     super(ctx, well);
     this.color = 'orange';
     this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -481,6 +494,8 @@ class Square extends Tetrimino {
     super(ctx, well);
     this.color = 'yellow';
     this.blockCoords = [[0, 0], [1, 0], [0, 1], [1, 1]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -521,7 +536,9 @@ class Pyramid extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'magenta';
-    this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]]
+    this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -648,6 +665,8 @@ class Gamma extends Tetrimino {
     super(ctx, well);
     this.color = 'blue';
     this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -803,7 +822,9 @@ class LeftSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'red';
-    this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]]
+    this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -961,6 +982,8 @@ class RightSnake extends Tetrimino {
     super(ctx, well);
     this.color = 'green';
     this.blockCoords = [[0, 1], [1, 1], [1, 0], [2, 0]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -1116,6 +1139,8 @@ class Straight extends Tetrimino {
     super(ctx, well);
     this.color = 'cyan';
     this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {
@@ -1279,7 +1304,7 @@ class Game {
 
   setupNewPiece() {
     this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 1000);
+    this.falling = window.setInterval(this.handleVerticalMovement, 200);
   }
 
   handleHorizontalMovement(event) {

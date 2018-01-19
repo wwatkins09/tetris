@@ -13,6 +13,7 @@ class Tetrimino {
 
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
+    this.checkIfGameOver = this.checkIfGameOver.bind(this);
   }
 
   move(dir) {
@@ -27,7 +28,7 @@ class Tetrimino {
     if (dir === 'right') {
       arr = [1, 0];
     }
-    if (dir === 'rotate') {
+    if (dir === 'rotate' || dir === 'none') {
       arr = [0, 0];
     }
     this.x += arr[0];
@@ -36,8 +37,6 @@ class Tetrimino {
       coord[0] += arr[0];
       coord[1] += arr[1];
       this.well.assignBlockColor(coord, this.color);
-      // this.ctx.fillRect(((coord[0] * 40)), ((coord[1] * 40)), 40, 40)
-      // this.ctx.strokeRect((coord[0] * 40), coord[1] * 40, 40, 40);
     });
     this.well.rerenderWell();
   }
@@ -108,6 +107,18 @@ class Tetrimino {
 
   rotateCounterClockwise() {
 
+  }
+
+  checkIfGameOver() {
+    this.blockCoords.forEach((coord) => {
+      if (this.well.getBlock(coord).status === 'filled') {
+        this.gameOver();
+      }
+    });
+  }
+
+  gameOver() {
+    console.log("Over!!");
   }
 }
 

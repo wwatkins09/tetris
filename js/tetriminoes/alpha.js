@@ -6,6 +6,8 @@ class Alpha extends Tetrimino {
     super(ctx, well);
     this.color = 'orange';
     this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
+    this.checkIfGameOver();
+    this.move('none');
   }
 
   canMoveDown() {

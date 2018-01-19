@@ -37,7 +37,7 @@ class Game {
 
   setupNewPiece() {
     this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 1000);
+    this.falling = window.setInterval(this.handleVerticalMovement, 200);
   }
 
   handleHorizontalMovement(event) {
