@@ -18,6 +18,7 @@ class Game {
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
+    this.over = false;
     this.well = new Well(ctx);
     this.ctx = ctx;
     this.setupNewPiece();
@@ -37,7 +38,12 @@ class Game {
 
   setupNewPiece() {
     this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    this.falling = window.setInterval(this.handleVerticalMovement, 200);
+    if (this.currentTetrimino.checkIfGameOver()) {
+      this.gameOver();
+    } else {
+      this.currentTetrimino.move('none');
+      this.falling = window.setInterval(this.handleVerticalMovement, 100);
+    }
   }
 
   handleHorizontalMovement(event) {
@@ -60,6 +66,11 @@ class Game {
 
   getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  gameOver() {
+    this.over = true;
+    console.log("worked!");
   }
 
 

@@ -6,8 +6,6 @@ class RightSnake extends Tetrimino {
     super(ctx, well);
     this.color = 'green';
     this.blockCoords = [[0, 1], [1, 1], [1, 0], [2, 0]];
-    this.checkIfGameOver();
-    this.move('none');
   }
 
   canMoveDown() {

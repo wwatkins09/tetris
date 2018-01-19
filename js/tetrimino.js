@@ -110,15 +110,13 @@ class Tetrimino {
   }
 
   checkIfGameOver() {
+    let result = false;
     this.blockCoords.forEach((coord) => {
       if (this.well.getBlock(coord).status === 'filled') {
-        this.gameOver();
+        result = true;
       }
     });
-  }
-
-  gameOver() {
-    console.log("Over!!");
+    return result;
   }
 }
 
