@@ -955,6 +955,7 @@ class Game {
     this.score = 0;
     this.htmlScore = document.getElementById('score-value');
     this.htmlScore.innerHTML = this.score;
+    this.speed = 500;
     this.well = new Well(ctx);
     this.ctx = ctx;
     this.setupNewPiece();
@@ -998,7 +999,7 @@ class Game {
     this.well.rerenderWell();
     this.score += 100;
     this.htmlScore.innerHTML = this.score;
-
+    this.speed -= 5;
   }
 
   setupNewPiece() {
@@ -1007,7 +1008,7 @@ class Game {
       this.gameOver();
     } else {
       this.currentTetrimino.move('none');
-      this.falling = window.setInterval(this.handleVerticalMovement, 300);
+      this.falling = window.setInterval(this.handleVerticalMovement, this.speed);
     }
   }
 
@@ -1026,6 +1027,9 @@ class Game {
     }
     if (event.key === "e") {
       this.currentTetrimino.handleRotation('clockwise');
+    }
+    if (event.key === "s") {
+      this.handleVerticalMovement();
     }
   }
 
