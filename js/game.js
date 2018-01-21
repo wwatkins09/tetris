@@ -21,6 +21,7 @@ class Game {
     this.handleStart = this.handleStart.bind(this);
     this.handleRestart = this.handleRestart.bind(this);
     this.handleSetup = this.handleSetup.bind(this);
+    this.handleMute = this.handleMute.bind(this);
     this.ctx = ctx;
     document.addEventListener('keydown', this.handleStart)
   }
@@ -38,13 +39,34 @@ class Game {
 
   handleSetup() {
     this.over = false;
+    this.muted = false;
     this.score = 0;
     this.htmlScore = document.getElementById('score-value');
     this.htmlScore.innerHTML = this.score;
     this.speed = 500;
     this.well = new Well(this.ctx);
     this.setupNewPiece();
+    document.addEventListener('keydown', this.handleMute);
     document.addEventListener('keydown', this.handleHorizontalMovement);
+    this.startPlayback();
+  }
+
+  startPlayback() {
+    if (!this.muted) {
+      return document.getElementById('music').play();
+    }
+  }
+
+  handleMute() {
+    if (event.key === "m") {
+      const audio = document.getElementById('music');
+      this.muted = !this.muted;
+      if (!this.muted) {
+        return audio.play();
+      } else {
+        return audio.pause();
+      }
+    }
   }
 
   handleVerticalMovement() {
