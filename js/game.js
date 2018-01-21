@@ -7,6 +7,7 @@ const Gamma = require('./tetriminoes/gamma.js');
 const LeftSnake = require('./tetriminoes/left_snake.js');
 const RightSnake = require('./tetriminoes/right_snake.js');
 const Straight = require('./tetriminoes/straight.js');
+const Block = require('./block.js');
 
 
 const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straight];
@@ -19,6 +20,9 @@ class Game {
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
     this.over = false;
+    this.score = 0;
+    this.htmlScore = document.getElementById('score-value');
+    this.htmlScore.innerHTML = this.score;
     this.well = new Well(ctx);
     this.ctx = ctx;
     this.setupNewPiece();
@@ -31,9 +35,38 @@ class Game {
     } else {
       clearInterval(this.falling)
       this.currentTetrimino.setFinalPosition();
-      this.well.checkForFullRow();
+      this.checkForFullRow();
       this.setupNewPiece();
     }
+  }
+
+  checkForFullRow() {
+    this.well.blocks.forEach((row, idx) => {
+      let full = true;
+      row.forEach((block) => {
+        if (block.status === 'empty') {
+          full = false;
+        }
+      });
+      if (full === true) {
+        this.clearRow(idx);
+      }
+    });
+  }
+
+  clearRow(idx) {
+    for (let i = idx; i > 0; i--) {
+      this.well.blocks[i] = this.well.blocks[i - 1];
+    }
+    let newRow = []
+    for (let i = 0; i < 10; i++) {
+      newRow.push(new Block([i,0]));
+    }
+    this.well.blocks[0] = newRow;
+    this.well.rerenderWell();
+    this.score += 100;
+    this.htmlScore.innerHTML = this.score;
+
   }
 
   setupNewPiece() {

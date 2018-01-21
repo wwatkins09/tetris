@@ -84,8 +84,8 @@ class View {
 
   constructor() {
     const canvasEl = document.getElementById('myCanvas');
-    canvasEl.height = 600;
-    canvasEl.width = 300;
+    canvasEl.height = 500;
+    canvasEl.width = 250;
     const ctx = canvasEl.getContext('2d');
     const game = new Game(ctx);
   }
@@ -129,41 +129,15 @@ class Well {
     this.blocks[coord[1]][coord[0]].color = color;
   }
 
-  checkForFullRow() {
-    this.blocks.forEach((row, idx) => {
-      let full = true;
-      row.forEach((block) => {
-        if (block.status === 'empty') {
-          full = false;
-        }
-      });
-      if (full === true) {
-        this.clearRow(idx);
-      }
-    });
-  }
-
-  clearRow(idx) {
-    for (let i = idx; i > 0; i--) {
-      this.blocks[i] = this.blocks[i - 1];
-    }
-    let newRow = []
-    for (let i = 0; i < 10; i++) {
-      newRow.push(new Block([i,0]));
-    }
-    this.blocks[0] = newRow;
-    this.rerenderWell();
-  }
-
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 300, 600);
+    this.ctx.clearRect(0, 0, 250, 500);
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
         this.ctx.fillStyle = block.color;
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillRect(((idx2 * 30)), ((idx1 * 30)), 30, 30)
-          this.ctx.strokeRect((idx2 * 30), (idx1 * 30), 30, 30);
+        this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25)
+          this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
         }
       });
     });
@@ -965,6 +939,7 @@ const Gamma = __webpack_require__(9);
 const LeftSnake = __webpack_require__(10);
 const RightSnake = __webpack_require__(11);
 const Straight = __webpack_require__(12);
+const Block = __webpack_require__(5);
 
 
 const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straight];
@@ -977,6 +952,9 @@ class Game {
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
 
     this.over = false;
+    this.score = 0;
+    this.htmlScore = document.getElementById('score-value');
+    this.htmlScore.innerHTML = this.score;
     this.well = new Well(ctx);
     this.ctx = ctx;
     this.setupNewPiece();
@@ -989,9 +967,38 @@ class Game {
     } else {
       clearInterval(this.falling)
       this.currentTetrimino.setFinalPosition();
-      this.well.checkForFullRow();
+      this.checkForFullRow();
       this.setupNewPiece();
     }
+  }
+
+  checkForFullRow() {
+    this.well.blocks.forEach((row, idx) => {
+      let full = true;
+      row.forEach((block) => {
+        if (block.status === 'empty') {
+          full = false;
+        }
+      });
+      if (full === true) {
+        this.clearRow(idx);
+      }
+    });
+  }
+
+  clearRow(idx) {
+    for (let i = idx; i > 0; i--) {
+      this.well.blocks[i] = this.well.blocks[i - 1];
+    }
+    let newRow = []
+    for (let i = 0; i < 10; i++) {
+      newRow.push(new Block([i,0]));
+    }
+    this.well.blocks[0] = newRow;
+    this.well.rerenderWell();
+    this.score += 100;
+    this.htmlScore.innerHTML = this.score;
+
   }
 
   setupNewPiece() {

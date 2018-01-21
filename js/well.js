@@ -28,41 +28,15 @@ class Well {
     this.blocks[coord[1]][coord[0]].color = color;
   }
 
-  checkForFullRow() {
-    this.blocks.forEach((row, idx) => {
-      let full = true;
-      row.forEach((block) => {
-        if (block.status === 'empty') {
-          full = false;
-        }
-      });
-      if (full === true) {
-        this.clearRow(idx);
-      }
-    });
-  }
-
-  clearRow(idx) {
-    for (let i = idx; i > 0; i--) {
-      this.blocks[i] = this.blocks[i - 1];
-    }
-    let newRow = []
-    for (let i = 0; i < 10; i++) {
-      newRow.push(new Block([i,0]));
-    }
-    this.blocks[0] = newRow;
-    this.rerenderWell();
-  }
-
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 300, 600);
+    this.ctx.clearRect(0, 0, 250, 500);
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
         this.ctx.fillStyle = block.color;
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillRect(((idx2 * 30)), ((idx1 * 30)), 30, 30)
-          this.ctx.strokeRect((idx2 * 30), (idx1 * 30), 30, 30);
+        this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25)
+          this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
         }
       });
     });

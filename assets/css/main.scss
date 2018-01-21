@@ -1,5 +1,6 @@
 body {
   background-color: black;
+  font-family: 'Press Start 2P';
 }
 
 main {
@@ -29,10 +30,13 @@ main {
   width: 256px;
   height: 133px;
   background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
 }
 
 #myCanvas {
-  margin-left: 30px;
+  margin-left: 56px;
   width: 250px;
   height: 500px;
   border: 1px solid blue;

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="./js/bundle.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.scss">
     <title></title>
   </head>
@@ -10,7 +11,12 @@
     <main>
       <span id="header"></span>
       <div class="tetris">
-        <span id="filler-left"></span>
+        <span id="filler-left">
+          <div id="score">
+            <p>Score</p>
+            <p id="score-value"></p>
+          </div>
+        </span>
         <canvas id="myCanvas"></canvas>
       </div>
     </main>
