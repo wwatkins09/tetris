@@ -16,6 +16,30 @@ class Tetrimino {
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
   }
 
+  canMoveLeft() {
+    let result = true;
+    this.blockCoords.forEach((coord) => {
+      let newX = coord[0] - 1;
+      let y = coord[1];
+      if (newX < 0 || this.well.getBlock([newX, y]).status === 'filled') {
+        result = false;
+      }
+    });
+    return result;
+  }
+
+  canMoveRight() {
+    let result = true;
+    this.blockCoords.forEach((coord) => {
+      let newX = coord[0] + 1;
+      let y = coord[1];
+      if (newX > 9 || this.well.getBlock([newX, y]).status === 'filled') {
+        result = false;
+      }
+    });
+    return result;
+  }
+
   move(dir) {
     this.clear();
     let arr;

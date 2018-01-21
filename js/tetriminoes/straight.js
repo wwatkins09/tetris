@@ -18,40 +18,6 @@ class Straight extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.rotationPos % 2 === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty'
-      );
-    }
-
-    if (this.rotationPos % 2 === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 3)]).status === 'empty'
-      );
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos % 2 === 0) {
-      return ((this.x + 4) < 10 &&
-      this.well.getBlock([(this.x + 4), this.y]).status === 'empty'
-      );
-    }
-
-    if (this.rotationPos % 2 === 1) {
-      return ((this.x + 1) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 2)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 3)]).status === 'empty'
-      );
-    }
-  }
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;

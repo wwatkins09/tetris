@@ -70,7 +70,7 @@
 const View = __webpack_require__(1);
 
 document.addEventListener('DOMContentLoaded', () => {
-  new View(document.getElementById('tetris-game'))
+  new View()
 });
 
 
@@ -84,8 +84,8 @@ class View {
 
   constructor() {
     const canvasEl = document.getElementById('myCanvas');
-    canvasEl.height = 800;
-    canvasEl.width = 400;
+    canvasEl.height = 600;
+    canvasEl.width = 300;
     const ctx = canvasEl.getContext('2d');
     const game = new Game(ctx);
   }
@@ -156,14 +156,14 @@ class Well {
   }
 
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 400, 800);
+    this.ctx.clearRect(0, 0, 300, 600);
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
         this.ctx.fillStyle = block.color;
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillRect(((idx2 * 40)), ((idx1 * 40)), 40, 40)
-          this.ctx.strokeRect((idx2 * 40), (idx1 * 40), 40, 40);
+        this.ctx.fillRect(((idx2 * 30)), ((idx1 * 30)), 30, 30)
+          this.ctx.strokeRect((idx2 * 30), (idx1 * 30), 30, 30);
         }
       });
     });
@@ -196,6 +196,30 @@ class Tetrimino {
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
+  }
+
+  canMoveLeft() {
+    let result = true;
+    this.blockCoords.forEach((coord) => {
+      let newX = coord[0] - 1;
+      let y = coord[1];
+      if (newX < 0 || this.well.getBlock([newX, y]).status === 'filled') {
+        result = false;
+      }
+    });
+    return result;
+  }
+
+  canMoveRight() {
+    let result = true;
+    this.blockCoords.forEach((coord) => {
+      let newX = coord[0] + 1;
+      let y = coord[1];
+      if (newX > 9 || this.well.getBlock([newX, y]).status === 'filled') {
+        result = false;
+      }
+    });
+    return result;
   }
 
   move(dir) {
@@ -345,64 +369,6 @@ class Alpha extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.rotationPos === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x), (this.y + 2)]).status === 'empty'
-      );
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos === 0) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-  }
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;
@@ -496,20 +462,6 @@ class Square extends Tetrimino {
     return (this.y < 18 && this.getBlocksBelow().length === 0)
   }
 
-  canMoveLeft() {
-    return (this.x > 0 &&
-      this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-      this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-    );
-  }
-
-  canMoveRight() {
-    return ((this.x + 2) < 10 &&
-      this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-      this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
-    );
-  }
-
   handleRotation(dir) {
     return
   }
@@ -530,7 +482,7 @@ class Pyramid extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'magenta';
-    this.blockCoords = [[1, 1], [0, 1], [1, 0], [2, 1]];
+    this.blockCoords = [[0, 1], [1, 0], [1, 1], [2, 1]];
   }
 
   canMoveDown() {
@@ -543,37 +495,6 @@ class Pyramid extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.x === 0) {
-      return false;
-    }
-    let result = true;
-    this.blockCoords.forEach((coord) => {
-      let newX = coord[0] - 1;
-      let y = coord[1];
-      if (this.well.getBlock([newX, y]).status === 'filled') {
-        result = false;
-      }
-    });
-    return result;
-  }
-
-  canMoveRight() {
-    if ((this.rotationPos % 2 === 0 && (this.x + 3) === 10) || (this.rotationPos % 2 === 1) && (this.x + 2) === 10) {
-      return false;
-    }
-    let result = true;
-    this.blockCoords.forEach((coord) => {
-      let newX = coord[0] + 1;
-      let y = coord[1];
-      if (this.well.getBlock([newX, y]).status === 'filled') {
-        result = false;
-      }
-    });
-    return result;
-  }
-
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;
@@ -583,25 +504,25 @@ class Pyramid extends Tetrimino {
     if (this.rotationPos === 0) {
         xFactor = 1;
         yFactor = 0;
-        rotationCoords = [[0, 0], [1, -1], [1, 1], [-1, 1]];
+        rotationCoords = [[1, -1], [1, 1], [0, 0], [-1, 1]];
     }
 
     if (this.rotationPos === 1) {
         xFactor = -1
         yFactor = 1
-        rotationCoords = [[0, 0], [1, 1], [-1, 1], [-1, -1]];
+        rotationCoords = [[1, 1], [-1, 1], [0, 0], [-1, -1]];
     }
 
     if (this.rotationPos === 2) {
         xFactor = 0;
         yFactor = -1;
-        rotationCoords = [[0, 0], [-1, 1], [-1, -1], [1, -1]];
+        rotationCoords = [[-1, 1], [-1, -1], [0, 0], [1, -1]];
     }
 
     if (this.rotationPos === 3) {
         xFactor = 0;
         yFactor = 0;
-        rotationCoords = [[0, 0], [-1, -1], [1, -1], [1, 1]];
+        rotationCoords = [[-1, -1], [1, -1], [0, 0], [1, 1]];
     }
 
     return {xFactor, yFactor, rotationCoords}
@@ -616,24 +537,24 @@ class Pyramid extends Tetrimino {
     if (this.rotationPos === 0) {
         xFactor = 0;
         yFactor = 0;
-        rotationCoords = [[0, 2], [-1, 1], [0, 0], [-1, -1]];
+        rotationCoords = [[1, 1], [-1, 1], [0, 0], [-1, -1]];
     }
     if (this.rotationPos === 1) {
         xFactor = -1;
         yFactor = 0;
-        rotationCoords = [[-2, 0], [-1, -1], [0, 0], [1, -1]];
+        rotationCoords = [[-1, 1], [-1, -1], [0, 0], [1, -1]];
     }
 
     if (this.rotationPos === 2) {
         xFactor = 1;
         yFactor = -1;
-        rotationCoords = [[0, -2], [1, -1], [0, 0], [1, -1]];
+        rotationCoords = [[-1, -1], [1, -1], [0, 0], [1, 1]];
     }
 
     if (this.rotationPos === 3) {
         xFactor = 0;
         yFactor = 1;
-        rotationCoords = [[2, 0], [1, 1], [0, 0], [-1, 1]]
+        rotationCoords = [[1, -1], [1, 1], [0, 0], [-1, 1]]
     }
 
     return {xFactor, yFactor, rotationCoords}
@@ -665,64 +586,6 @@ class Gamma extends Tetrimino {
     }
     if (this.rotationPos % 2 === 1) {
       return (this.y < 17 && this.getBlocksBelow().length === 0);
-    }
-  }
-
-  canMoveLeft() {
-    if (this.rotationPos === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return (this.x > 0 &&
-        this.well.getBlock([this.x, this.y]).status === 'empty' &&
-        this.well.getBlock([this.x, (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos === 0) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
     }
   }
 
@@ -825,67 +688,6 @@ class LeftSnake extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.rotationPos === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([this.x, (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([this.x, this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-
-    }
-    if (this.rotationPos === 2) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([this.x, (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return (this.x > 0 &&
-        this.well.getBlock([this.x, this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos === 0) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-
-  }
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;
@@ -981,67 +783,6 @@ class RightSnake extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.rotationPos === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([this.x, this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([this.x, (this.y + 2)]).status === 'empty'
-      );
-
-    }
-    if (this.rotationPos === 2) {
-      return (this.x > 0 &&
-        this.well.getBlock([this.x, this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([this.x, (this.y + 2)]).status === 'empty'
-      );
-
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos === 0) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-
-  }
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;
@@ -1134,40 +875,6 @@ class Straight extends Tetrimino {
 
     if (this.rotationPos % 2 === 1) {
       return (this.y < 16 && this.getBlocksBelow().length === 0);
-    }
-  }
-
-  canMoveLeft() {
-    if (this.rotationPos % 2 === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty'
-      );
-    }
-
-    if (this.rotationPos % 2 === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 3)]).status === 'empty'
-      );
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos % 2 === 0) {
-      return ((this.x + 4) < 10 &&
-      this.well.getBlock([(this.x + 4), this.y]).status === 'empty'
-      );
-    }
-
-    if (this.rotationPos % 2 === 1) {
-      return ((this.x + 1) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 2)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 3)]).status === 'empty'
-      );
     }
   }
 
@@ -1293,7 +1000,7 @@ class Game {
       this.gameOver();
     } else {
       this.currentTetrimino.move('none');
-      this.falling = window.setInterval(this.handleVerticalMovement, 100);
+      this.falling = window.setInterval(this.handleVerticalMovement, 300);
     }
   }
 

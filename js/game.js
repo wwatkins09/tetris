@@ -42,7 +42,7 @@ class Game {
       this.gameOver();
     } else {
       this.currentTetrimino.move('none');
-      this.falling = window.setInterval(this.handleVerticalMovement, 100);
+      this.falling = window.setInterval(this.handleVerticalMovement, 300);
     }
   }
 

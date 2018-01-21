@@ -17,64 +17,6 @@ class Alpha extends Tetrimino {
     }
   }
 
-  canMoveLeft() {
-    if (this.rotationPos === 0) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x - 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return (this.x > 0 &&
-        this.well.getBlock([(this.x - 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x), (this.y + 2)]).status === 'empty'
-      );
-    }
-  }
-
-  canMoveRight() {
-    if (this.rotationPos === 0) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 3), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 1) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 1), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 2) {
-      return ((this.x + 3) < 10 &&
-        this.well.getBlock([(this.x + 3), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 1), (this.y + 1)]).status === 'empty'
-      );
-    }
-    if (this.rotationPos === 3) {
-      return ((this.x + 2) < 10 &&
-        this.well.getBlock([(this.x + 2), this.y]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 1)]).status === 'empty' &&
-        this.well.getBlock([(this.x + 2), (this.y + 2)]).status === 'empty'
-      );
-    }
-  }
-
   rotateClockwise() {
     let rotationCoords;
     let canRotate = true;

@@ -55,14 +55,14 @@ class Well {
   }
 
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 400, 800);
+    this.ctx.clearRect(0, 0, 300, 600);
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
         this.ctx.fillStyle = block.color;
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillRect(((idx2 * 40)), ((idx1 * 40)), 40, 40)
-          this.ctx.strokeRect((idx2 * 40), (idx1 * 40), 40, 40);
+        this.ctx.fillRect(((idx2 * 30)), ((idx1 * 30)), 30, 30)
+          this.ctx.strokeRect((idx2 * 30), (idx1 * 30), 30, 30);
         }
       });
     });
