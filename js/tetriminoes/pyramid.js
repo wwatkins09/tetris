@@ -5,7 +5,7 @@ class Pyramid extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'magenta';
-    this.blockCoords = [[0, 1], [1, 0], [1, 1], [2, 1]];
+    this.blockCoords = [[3, 1], [4, 0], [4, 1], [5, 1]];
   }
 
   canMoveDown() {

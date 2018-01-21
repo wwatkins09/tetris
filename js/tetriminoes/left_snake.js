@@ -5,7 +5,7 @@ class LeftSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'red';
-    this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]];
+    this.blockCoords = [[3, 0], [4, 0], [4, 1], [5, 1]];
   }
 
   canMoveDown() {

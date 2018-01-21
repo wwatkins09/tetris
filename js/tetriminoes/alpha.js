@@ -5,7 +5,7 @@ class Alpha extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'orange';
-    this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
+    this.blockCoords = [[3, 1], [4, 1], [5, 1], [5, 0]]
   }
 
   canMoveDown() {

@@ -3,7 +3,7 @@ class Tetrimino {
   constructor(ctx, well) {
     this.ctx = ctx;
     this.well = well;
-    this.x = 0;
+    this.x = 3;
     this.y = 0;
     this.blockCoords = [];
     this.rotationPos = 0;

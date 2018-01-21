@@ -159,7 +159,7 @@ class Tetrimino {
   constructor(ctx, well) {
     this.ctx = ctx;
     this.well = well;
-    this.x = 0;
+    this.x = 3;
     this.y = 0;
     this.blockCoords = [];
     this.rotationPos = 0;
@@ -331,7 +331,7 @@ class Alpha extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'orange';
-    this.blockCoords = [[0, 1], [1, 1], [2, 1], [2, 0]]
+    this.blockCoords = [[3, 1], [4, 1], [5, 1], [5, 0]]
   }
 
   canMoveDown() {
@@ -429,7 +429,7 @@ class Square extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'yellow';
-    this.blockCoords = [[0, 0], [1, 0], [0, 1], [1, 1]];
+    this.blockCoords = [[3, 0], [4, 0], [3, 1], [4, 1]];
   }
 
   canMoveDown() {
@@ -456,7 +456,7 @@ class Pyramid extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'magenta';
-    this.blockCoords = [[0, 1], [1, 0], [1, 1], [2, 1]];
+    this.blockCoords = [[3, 1], [4, 0], [4, 1], [5, 1]];
   }
 
   canMoveDown() {
@@ -551,7 +551,7 @@ class Gamma extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'blue';
-    this.blockCoords = [[0, 0], [0, 1], [1, 1], [2, 1]];
+    this.blockCoords = [[3, 0], [3, 1], [4, 1], [5, 1]];
   }
 
   canMoveDown() {
@@ -649,7 +649,7 @@ class LeftSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'red';
-    this.blockCoords = [[0, 0], [1, 0], [1, 1], [2, 1]];
+    this.blockCoords = [[3, 0], [4, 0], [4, 1], [5, 1]];
   }
 
   canMoveDown() {
@@ -745,7 +745,7 @@ class RightSnake extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'green';
-    this.blockCoords = [[0, 1], [1, 1], [1, 0], [2, 0]];
+    this.blockCoords = [[3, 1], [4, 1], [4, 0], [5, 0]];
   }
 
   canMoveDown() {
@@ -839,7 +839,7 @@ class Straight extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'cyan';
-    this.blockCoords = [[0, 0], [1, 0], [2, 0], [3, 0]];
+    this.blockCoords = [[3, 0], [4, 0], [5, 0], [6, 0]];
   }
 
   canMoveDown() {

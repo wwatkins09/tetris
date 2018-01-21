@@ -5,7 +5,7 @@ class Square extends Tetrimino {
   constructor(ctx, well) {
     super(ctx, well);
     this.color = 'yellow';
-    this.blockCoords = [[0, 0], [1, 0], [0, 1], [1, 1]];
+    this.blockCoords = [[3, 0], [4, 0], [3, 1], [4, 1]];
   }
 
   canMoveDown() {
