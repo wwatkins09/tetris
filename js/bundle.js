@@ -950,16 +950,33 @@ class Game {
   constructor(ctx) {
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
+    this.handleStart = this.handleStart.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
+    this.handleSetup = this.handleSetup.bind(this);
+    this.ctx = ctx;
+    document.addEventListener('keydown', this.handleStart)
+  }
 
+  handleStart() {
+    if (event.key === "s") {
+      const startModal = document.getElementById('start');
+      startModal.classList.remove('start-game-modal');
+      startModal.classList.add('hidden-modal');
+      document.removeEventListener('keydown', this.handleStart);
+      this.handleSetup();
+    }
+
+  }
+
+  handleSetup() {
     this.over = false;
     this.score = 0;
     this.htmlScore = document.getElementById('score-value');
     this.htmlScore.innerHTML = this.score;
     this.speed = 500;
-    this.well = new Well(ctx);
-    this.ctx = ctx;
+    this.well = new Well(this.ctx);
     this.setupNewPiece();
-    document.addEventListener('keydown', this.handleHorizontalMovement)
+    document.addEventListener('keydown', this.handleHorizontalMovement);
   }
 
   handleVerticalMovement() {
@@ -1039,7 +1056,20 @@ class Game {
 
   gameOver() {
     this.over = true;
-    console.log("worked!");
+    const overModal = document.getElementById("over");
+    overModal.classList.remove('hidden-modal');
+    overModal.classList.add('end-game-modal');
+    document.addEventListener('keydown', this.handleRestart);
+  }
+
+  handleRestart() {
+    if (event.key === "n") {
+      document.removeEventListener('keydown', this.handleRestart);
+      const overModal = document.getElementById("over");
+      overModal.classList.remove('end-game-modal');
+      overModal.classList.add('hidden-modal');
+      this.handleSetup();
+    }
   }
 
 

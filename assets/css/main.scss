@@ -11,6 +11,7 @@ main {
   display: flex;
   flex-direction: column;
   margin: auto;
+  position: relative;
 
 }
 
@@ -41,4 +42,63 @@ main {
   height: 500px;
   border: 1px solid blue;
   background-color: white;
+}
+
+.start-game-modal {
+  position: absolute;
+  top: 19%;
+  left: 42%;
+  width: 200px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.start-game-modal p {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  text-align: center;
+}
+
+.start-game-modal h4 {
+  margin-top: 0;
+}
+
+.hidden-modal {
+  height: 0;
+  width: 0;
+  z-index: 0;
+  visibility: hidden;
+}
+
+.end-game-modal {
+  position: absolute;
+  top: 19%;
+  left: 42%;
+  width: 200px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  z-index: 50;
+  background-color: white;
+}
+
+.end-game-modal p {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  text-align: center;
+}
+
+#game-over-message {
+  font-size: 16px;
+  color: red;
 }
