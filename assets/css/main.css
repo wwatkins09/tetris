@@ -19,6 +19,14 @@ main {
   width: 100%;
   background-color: black;
   height: 122px;
+  display: flex;
+  justify-content: center;
+}
+
+#header p {
+  font-size: 32px;
+  color: white;
+
 }
 
 .tetris {
