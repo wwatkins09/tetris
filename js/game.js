@@ -42,7 +42,7 @@ class Game {
   handleSetup() {
     this.over = false;
     this.score = 0;
-    this.highScore = window.localStorage.getItem('highScore') || 0;
+    this.highScore = parseInt(window.localStorage.getItem('highScore')) || 0;
     this.htmlScore = document.getElementById('current-score-value');
     this.htmlScore.innerHTML = this.score;
     this.htmlHighScore = document.getElementById('high-score-value');
@@ -111,6 +111,10 @@ class Game {
     this.well.rerenderWell();
     this.score += 100;
     this.htmlScore.innerHTML = this.score;
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      this.htmlHighScore.innerHTML = this.highScore
+    }
     this.speed -= 5;
   }
 
@@ -155,6 +159,7 @@ class Game {
     overModal.classList.remove('hidden-modal');
     overModal.classList.add('end-game-modal');
     document.addEventListener('keydown', this.handleRestart);
+    window.localStorage.setItem('highScore', this.highScore);
   }
 
   handleRestart() {
