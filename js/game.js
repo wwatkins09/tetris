@@ -15,7 +15,7 @@ const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straigh
 class Game {
 
 
-  constructor(ctx) {
+  constructor(ctx, ctx2) {
     this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
     this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
     this.handleStart = this.handleStart.bind(this);
@@ -23,6 +23,7 @@ class Game {
     this.handleSetup = this.handleSetup.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.ctx = ctx;
+    this.ctx2 = ctx2;
     document.addEventListener('keydown', this.handleStart)
   }
 
@@ -41,9 +42,11 @@ class Game {
   handleSetup() {
     this.over = false;
     this.score = 0;
-    window.localStorage.setItem('high score', (localStorage.getItem('high score') > this.score) ? localStorage.getItem('high score') : this.score);
-    this.htmlScore = document.getElementById('score-value');
+    this.highScore = window.localStorage.getItem('highScore') || 0;
+    this.htmlScore = document.getElementById('current-score-value');
     this.htmlScore.innerHTML = this.score;
+    this.htmlHighScore = document.getElementById('high-score-value');
+    this.htmlHighScore.innerHTML = this.highScore;
     this.speed = 500;
     this.well = new Well(this.ctx);
     this.setupNewPiece();

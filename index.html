@@ -11,10 +11,6 @@
   <body>
     <main>
       <span id="start" class="start-game-modal">
-        <h4>How to play:</h4>
-        <p>a/d - left/right</p>
-        <p>s - down</p>
-        <p>q/r - rotate</p>
         <p>Press "s" to start!</p>
       </span>
       <span id="over" class="hidden-modal">
@@ -25,12 +21,23 @@
         <p>Tetris</p>
       </span>
       <div class="tetris">
-        <span id="filler-left">
-          <div id="score">
-            <p>Score</p>
-            <p id="score-value"></p>
-            <p>Press "m" to mute</p>
-          </div>
+        <span class="left-col">
+          <span class="inner-border">
+            <div class="scores">
+              <div class="current-score">
+                <p>Score: </p>
+                <p id="current-score-value"></p>
+              </div>
+              <div id="high-score">
+                <p>High Score: </p>
+                <p id="high-score-value"></p>
+              </div>
+            </div>
+            <div class="next-piece">
+              <p>Next</p>
+              <canvas id="myCanvas2"></canvas>
+            </div>
+          </span>
         </span>
         <canvas id="myCanvas"></canvas>
       </div>

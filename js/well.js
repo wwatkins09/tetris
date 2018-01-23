@@ -35,8 +35,8 @@ class Well {
         if (block.color != 'white') {
         this.ctx.fillStyle = block.color;
         this.ctx.strokeStyle = 'black';
-        this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25)
-          this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
+        this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25);
+        this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
         }
       });
     });
