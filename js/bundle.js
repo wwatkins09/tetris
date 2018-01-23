@@ -60,218 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const View = __webpack_require__(1);
-
-document.addEventListener('DOMContentLoaded', () => {
-  new View()
-});
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Game = __webpack_require__(2);
-
-class View {
-
-  constructor() {
-    const canvasEl = document.getElementById('myCanvas');
-    canvasEl.height = 500;
-    canvasEl.width = 250;
-    const ctx = canvasEl.getContext('2d');
-    const game = new Game(ctx);
-  }
-
-}
-
-module.exports = View;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Well = __webpack_require__(5);
-const Tetrimino = __webpack_require__(3);
-const Alpha = __webpack_require__(6);
-const Square = __webpack_require__(7);
-const Pyramid = __webpack_require__(8);
-const Gamma = __webpack_require__(9);
-const LeftSnake = __webpack_require__(10);
-const RightSnake = __webpack_require__(11);
-const Straight = __webpack_require__(12);
-const Block = __webpack_require__(4);
-
-
-const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straight];
-
-class Game {
-
-
-  constructor(ctx) {
-    this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
-    this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
-    this.handleStart = this.handleStart.bind(this);
-    this.handleRestart = this.handleRestart.bind(this);
-    this.handleSetup = this.handleSetup.bind(this);
-    this.handleMute = this.handleMute.bind(this);
-    this.ctx = ctx;
-    document.addEventListener('keydown', this.handleStart)
-  }
-
-  handleStart() {
-    if (event.key === "s") {
-      const startModal = document.getElementById('start');
-      startModal.classList.remove('start-game-modal');
-      startModal.classList.add('hidden-modal');
-      document.removeEventListener('keydown', this.handleStart);
-      this.handleSetup();
-    }
-
-  }
-
-  handleSetup() {
-    this.over = false;
-    this.muted = false;
-    this.score = 0;
-    this.htmlScore = document.getElementById('score-value');
-    this.htmlScore.innerHTML = this.score;
-    this.speed = 500;
-    this.well = new Well(this.ctx);
-    this.setupNewPiece();
-    document.addEventListener('keydown', this.handleMute);
-    document.addEventListener('keydown', this.handleHorizontalMovement);
-    this.startPlayback();
-  }
-
-  startPlayback() {
-    if (!this.muted) {
-      return document.getElementById('music').play();
-    }
-  }
-
-  handleMute() {
-    if (event.key === "m") {
-      const audio = document.getElementById('music');
-      this.muted = !this.muted;
-      if (!this.muted) {
-        return audio.play();
-      } else {
-        return audio.pause();
-      }
-    }
-  }
-
-  handleVerticalMovement() {
-    if (this.currentTetrimino.canMoveDown()) {
-      this.currentTetrimino.move('down');
-    } else {
-      clearInterval(this.falling)
-      this.currentTetrimino.setFinalPosition();
-      this.checkForFullRow();
-      this.setupNewPiece();
-    }
-  }
-
-  checkForFullRow() {
-    this.well.blocks.forEach((row, idx) => {
-      let full = true;
-      row.forEach((block) => {
-        if (block.status === 'empty') {
-          full = false;
-        }
-      });
-      if (full === true) {
-        this.clearRow(idx);
-      }
-    });
-  }
-
-  clearRow(idx) {
-    for (let i = idx; i > 0; i--) {
-      this.well.blocks[i] = this.well.blocks[i - 1];
-    }
-    let newRow = []
-    for (let i = 0; i < 10; i++) {
-      newRow.push(new Block([i,0]));
-    }
-    this.well.blocks[0] = newRow;
-    this.well.rerenderWell();
-    this.score += 100;
-    this.htmlScore.innerHTML = this.score;
-    this.speed -= 5;
-  }
-
-  setupNewPiece() {
-    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-    if (this.currentTetrimino.checkIfGameOver()) {
-      this.gameOver();
-    } else {
-      this.currentTetrimino.move('none');
-      this.falling = window.setInterval(this.handleVerticalMovement, this.speed);
-    }
-  }
-
-  handleHorizontalMovement(event) {
-    if (event.key.includes("Arrow")) {
-      event.preventDefault();
-    }
-    if (event.key === "a" && this.currentTetrimino.canMoveLeft()) {
-      this.currentTetrimino.move('left');
-    }
-    if (event.key === "d" && this.currentTetrimino.canMoveRight()) {
-      this.currentTetrimino.move('right');
-    }
-    if (event.key === "q") {
-      this.currentTetrimino.handleRotation('counterClockwise');
-    }
-    if (event.key === "e") {
-      this.currentTetrimino.handleRotation('clockwise');
-    }
-    if (event.key === "s") {
-      this.handleVerticalMovement();
-    }
-  }
-
-  getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
-  gameOver() {
-    this.over = true;
-    const overModal = document.getElementById("over");
-    overModal.classList.remove('hidden-modal');
-    overModal.classList.add('end-game-modal');
-    document.addEventListener('keydown', this.handleRestart);
-  }
-
-  handleRestart() {
-    if (event.key === "n") {
-      document.removeEventListener('keydown', this.handleRestart);
-      const overModal = document.getElementById("over");
-      overModal.classList.remove('end-game-modal');
-      overModal.classList.add('hidden-modal');
-      this.handleSetup();
-    }
-  }
-
-
-
-}
-
-module.exports = Game;
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 class Tetrimino {
@@ -424,7 +217,7 @@ module.exports = Tetrimino;
 
 
 /***/ }),
-/* 4 */
+/* 1 */
 /***/ (function(module, exports) {
 
 class Block {
@@ -441,11 +234,220 @@ module.exports = Block;
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const View = __webpack_require__(3);
+
+document.addEventListener('DOMContentLoaded', () => {
+  new View()
+});
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Game = __webpack_require__(4);
+
+class View {
+
+  constructor() {
+    const canvasEl = document.getElementById('myCanvas');
+    canvasEl.height = 500;
+    canvasEl.width = 250;
+    const ctx = canvasEl.getContext('2d');
+    const game = new Game(ctx);
+  }
+
+}
+
+module.exports = View;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Well = __webpack_require__(5);
+const Tetrimino = __webpack_require__(0);
+const Alpha = __webpack_require__(6);
+const Square = __webpack_require__(7);
+const Pyramid = __webpack_require__(8);
+const Gamma = __webpack_require__(9);
+const LeftSnake = __webpack_require__(10);
+const RightSnake = __webpack_require__(11);
+const Straight = __webpack_require__(12);
+const Block = __webpack_require__(1);
+
+
+const allPieces = [Alpha, Square, Pyramid, Gamma, LeftSnake, RightSnake, Straight];
+
+class Game {
+
+
+  constructor(ctx) {
+    this.handleHorizontalMovement = this.handleHorizontalMovement.bind(this);
+    this.handleVerticalMovement = this.handleVerticalMovement.bind(this);
+    this.handleStart = this.handleStart.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
+    this.handleSetup = this.handleSetup.bind(this);
+    this.handleMute = this.handleMute.bind(this);
+    this.ctx = ctx;
+    document.addEventListener('keydown', this.handleStart)
+  }
+
+  handleStart() {
+    if (event.key === "s") {
+      const startModal = document.getElementById('start');
+      startModal.classList.remove('start-game-modal');
+      startModal.classList.add('hidden-modal');
+      document.removeEventListener('keydown', this.handleStart);
+      window.localStorage.setItem('muted', 'false');
+      this.handleSetup();
+    }
+
+  }
+
+  handleSetup() {
+    this.over = false;
+    this.score = 0;
+    window.localStorage.setItem('high score', (localStorage.getItem('high score') > this.score) ? localStorage.getItem('high score') : this.score);
+    this.htmlScore = document.getElementById('score-value');
+    this.htmlScore.innerHTML = this.score;
+    this.speed = 500;
+    this.well = new Well(this.ctx);
+    this.setupNewPiece();
+    document.addEventListener('keydown', this.handleMute);
+    document.addEventListener('keydown', this.handleHorizontalMovement);
+    this.startPlayback();
+  }
+
+  startPlayback() {
+    if (window.localStorage.getItem('muted') === 'false') {
+      return document.getElementById('music').play();
+    }
+  }
+
+  handleMute() {
+    if (event.key === "m") {
+      const audio = document.getElementById('music');
+      if (window.localStorage.getItem('muted') === 'true') {
+        window.localStorage.setItem('muted', 'false');
+        return audio.play();
+      } else {
+        window.localStorage.setItem('muted', 'true');
+        return audio.pause();
+      }
+    }
+  }
+
+  handleVerticalMovement() {
+    if (this.currentTetrimino.canMoveDown()) {
+      this.currentTetrimino.move('down');
+    } else {
+      clearInterval(this.falling)
+      this.currentTetrimino.setFinalPosition();
+      this.checkForFullRow();
+      this.setupNewPiece();
+    }
+  }
+
+  checkForFullRow() {
+    this.well.blocks.forEach((row, idx) => {
+      let full = true;
+      row.forEach((block) => {
+        if (block.status === 'empty') {
+          full = false;
+        }
+      });
+      if (full === true) {
+        this.clearRow(idx);
+      }
+    });
+  }
+
+  clearRow(idx) {
+    for (let i = idx; i > 0; i--) {
+      this.well.blocks[i] = this.well.blocks[i - 1];
+    }
+    let newRow = []
+    for (let i = 0; i < 10; i++) {
+      newRow.push(new Block([i,0]));
+    }
+    this.well.blocks[0] = newRow;
+    this.well.rerenderWell();
+    this.score += 100;
+    this.htmlScore.innerHTML = this.score;
+    this.speed -= 5;
+  }
+
+  setupNewPiece() {
+    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+    if (this.currentTetrimino.checkIfGameOver()) {
+      this.gameOver();
+    } else {
+      this.currentTetrimino.move('none');
+      this.falling = window.setInterval(this.handleVerticalMovement, this.speed);
+    }
+  }
+
+  handleHorizontalMovement(event) {
+    if (event.key.includes("Arrow")) {
+      event.preventDefault();
+    }
+    if (event.key === "a" && this.currentTetrimino.canMoveLeft()) {
+      this.currentTetrimino.move('left');
+    }
+    if (event.key === "d" && this.currentTetrimino.canMoveRight()) {
+      this.currentTetrimino.move('right');
+    }
+    if (event.key === "q") {
+      this.currentTetrimino.handleRotation('counterClockwise');
+    }
+    if (event.key === "e") {
+      this.currentTetrimino.handleRotation('clockwise');
+    }
+    if (event.key === "s") {
+      this.handleVerticalMovement();
+    }
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  gameOver() {
+    this.over = true;
+    const overModal = document.getElementById("over");
+    overModal.classList.remove('hidden-modal');
+    overModal.classList.add('end-game-modal');
+    document.addEventListener('keydown', this.handleRestart);
+  }
+
+  handleRestart() {
+    if (event.key === "n") {
+      document.removeEventListener('keydown', this.handleRestart);
+      const overModal = document.getElementById("over");
+      overModal.classList.remove('end-game-modal');
+      overModal.classList.add('hidden-modal');
+      this.handleSetup();
+    }
+  }
+
+
+
+}
+
+module.exports = Game;
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
-const Block = __webpack_require__(4);
+const Tetrimino = __webpack_require__(0);
+const Block = __webpack_require__(1);
 
 class Well {
 
@@ -498,7 +500,7 @@ module.exports = Well;
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class Alpha extends Tetrimino {
 
@@ -596,7 +598,7 @@ module.exports = Alpha;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class Square extends Tetrimino {
 
@@ -623,7 +625,7 @@ module.exports = Square;
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class Pyramid extends Tetrimino {
 
@@ -718,7 +720,7 @@ module.exports = Pyramid;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class Gamma extends Tetrimino {
 
@@ -816,7 +818,7 @@ module.exports = Gamma;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class LeftSnake extends Tetrimino {
 
@@ -912,7 +914,7 @@ module.exports = LeftSnake;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class RightSnake extends Tetrimino {
 
@@ -1006,7 +1008,7 @@ module.exports = RightSnake;
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Tetrimino = __webpack_require__(3);
+const Tetrimino = __webpack_require__(0);
 
 class Straight extends Tetrimino {
 

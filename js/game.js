@@ -32,6 +32,7 @@ class Game {
       startModal.classList.remove('start-game-modal');
       startModal.classList.add('hidden-modal');
       document.removeEventListener('keydown', this.handleStart);
+      window.localStorage.setItem('muted', 'false');
       this.handleSetup();
     }
 
@@ -39,8 +40,8 @@ class Game {
 
   handleSetup() {
     this.over = false;
-    this.muted = false;
     this.score = 0;
+    window.localStorage.setItem('high score', (localStorage.getItem('high score') > this.score) ? localStorage.getItem('high score') : this.score);
     this.htmlScore = document.getElementById('score-value');
     this.htmlScore.innerHTML = this.score;
     this.speed = 500;
@@ -52,7 +53,7 @@ class Game {
   }
 
   startPlayback() {
-    if (!this.muted) {
+    if (window.localStorage.getItem('muted') === 'false') {
       return document.getElementById('music').play();
     }
   }
@@ -60,10 +61,11 @@ class Game {
   handleMute() {
     if (event.key === "m") {
       const audio = document.getElementById('music');
-      this.muted = !this.muted;
-      if (!this.muted) {
+      if (window.localStorage.getItem('muted') === 'true') {
+        window.localStorage.setItem('muted', 'false');
         return audio.play();
       } else {
+        window.localStorage.setItem('muted', 'true');
         return audio.pause();
       }
     }
