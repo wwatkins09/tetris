@@ -169,6 +169,7 @@ class Game {
     const overModal = document.getElementById("over");
     overModal.classList.remove('hidden-modal');
     overModal.classList.add('end-game-modal');
+    document.removeEventListener('keydown', this.handleHorizontalMovement);
     document.addEventListener('keydown', this.handleRestart);
     window.localStorage.setItem('highScore', this.highScore);
   }
@@ -176,6 +177,7 @@ class Game {
   handleRestart() {
     if (event.key === "n") {
       document.removeEventListener('keydown', this.handleRestart);
+      document.addEventListener('keydown', this.handleHorizontalMovement);
       const overModal = document.getElementById("over");
       overModal.classList.remove('end-game-modal');
       overModal.classList.add('hidden-modal');

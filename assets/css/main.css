@@ -140,10 +140,15 @@ main {
   flex-direction: column;
 }
 
+.inner-border > div {
+  margin-left: 10px;
+}
+
 #myCanvas2 {
   background-color: white;
   width: 150px;
   height: 75px;
+  margin-left: 10px;
 }
 
 .directions {
@@ -161,4 +166,13 @@ main {
 
 .current-score {
   display: flex;
+}
+
+.next {
+  display: flex;
+  align-items: center;
+}
+
+.next p {
+  margin: 0;
 }
