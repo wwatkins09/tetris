@@ -14,6 +14,7 @@ class Tetrimino {
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
+    this.renderNextTetrimino = this.renderNextTetrimino.bind(this);
   }
 
   canMoveLeft() {
@@ -141,6 +142,16 @@ class Tetrimino {
       }
     });
     return result;
+  }
+
+  renderNextTetrimino() {
+    this.well.clearWell();
+    this.blockCoords.forEach((blockCoord) => {
+      blockCoord[0] -= 3;
+      blockCoord[1] += 1;
+      this.well.assignBlockColor(blockCoord, this.color);
+    });
+    this.well.rerenderWell();
   }
 }
 

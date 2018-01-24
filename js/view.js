@@ -5,8 +5,8 @@ class View {
   constructor() {
     const canvasEl2 = document.getElementById('myCanvas2');
     const ctx2 = canvasEl2.getContext('2d');
-    canvasEl2.width = 250;
-    canvasEl2.height = 95;
+    canvasEl2.width = 150;
+    canvasEl2.height = 75;
 
     const canvasEl = document.getElementById('myCanvas');
     canvasEl.height = 500;

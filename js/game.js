@@ -22,6 +22,7 @@ class Game {
     this.handleRestart = this.handleRestart.bind(this);
     this.handleSetup = this.handleSetup.bind(this);
     this.handleMute = this.handleMute.bind(this);
+    this.setupNewPiece = this.setupNewPiece.bind(this);
     this.ctx = ctx;
     this.ctx2 = ctx2;
     document.addEventListener('keydown', this.handleStart)
@@ -48,7 +49,8 @@ class Game {
     this.htmlHighScore = document.getElementById('high-score-value');
     this.htmlHighScore.innerHTML = this.highScore;
     this.speed = 500;
-    this.well = new Well(this.ctx);
+    this.well = new Well(this.ctx, 20, 10);
+    this.well2 = new Well(this.ctx2, 3, 6);
     this.setupNewPiece();
     document.addEventListener('keydown', this.handleMute);
     document.addEventListener('keydown', this.handleHorizontalMovement);
@@ -119,7 +121,16 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+    if (!this.nextTetrimino) {
+      this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      this.nextTetriminoIdx = this.getRandomInt(7);
+      this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
+    } else {
+      this.currentTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx, this.well);
+      this.nextTetriminoIdx = this.getRandomInt(7);
+      this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
+    }
+    this.nextTetrimino.renderNextTetrimino();
     if (this.currentTetrimino.checkIfGameOver()) {
       this.gameOver();
     } else {

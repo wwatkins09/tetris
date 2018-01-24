@@ -3,12 +3,14 @@ const Block = require('./block.js');
 
 class Well {
 
-  constructor(ctx) {
+  constructor(ctx, rows, columns) {
+    this.rows = rows;
+    this.columns = columns;
     this.ctx = ctx;
     let blocks = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < rows; i++) {
       let row = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < columns; j++) {
         row.push(new Block([i,j]));
       }
       blocks.push(row);
@@ -29,7 +31,7 @@ class Well {
   }
 
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 250, 500);
+    this.ctx.clearRect(0, 0, (25 * this.columns), (25 * this.rows));
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
@@ -38,6 +40,14 @@ class Well {
         this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25);
         this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
         }
+      });
+    });
+  }
+
+  clearWell() {
+    this.blocks.forEach((row, idx1) => {
+      row.forEach((block, idx2) => {
+        this.assignBlockColor([idx2, idx1], 'white');
       });
     });
   }

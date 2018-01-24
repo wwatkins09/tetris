@@ -83,6 +83,7 @@ class Tetrimino {
     this.getBlocksBelow = this.getBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
+    this.renderNextTetrimino = this.renderNextTetrimino.bind(this);
   }
 
   canMoveLeft() {
@@ -211,6 +212,16 @@ class Tetrimino {
     });
     return result;
   }
+
+  renderNextTetrimino() {
+    this.well.clearWell();
+    this.blockCoords.forEach((blockCoord) => {
+      blockCoord[0] -= 3;
+      blockCoord[1] += 1;
+      this.well.assignBlockColor(blockCoord, this.color);
+    });
+    this.well.rerenderWell();
+  }
 }
 
 module.exports = Tetrimino;
@@ -255,8 +266,8 @@ class View {
   constructor() {
     const canvasEl2 = document.getElementById('myCanvas2');
     const ctx2 = canvasEl2.getContext('2d');
-    canvasEl2.width = 250;
-    canvasEl2.height = 95;
+    canvasEl2.width = 150;
+    canvasEl2.height = 75;
 
     const canvasEl = document.getElementById('myCanvas');
     canvasEl.height = 500;
@@ -298,6 +309,7 @@ class Game {
     this.handleRestart = this.handleRestart.bind(this);
     this.handleSetup = this.handleSetup.bind(this);
     this.handleMute = this.handleMute.bind(this);
+    this.setupNewPiece = this.setupNewPiece.bind(this);
     this.ctx = ctx;
     this.ctx2 = ctx2;
     document.addEventListener('keydown', this.handleStart)
@@ -324,7 +336,8 @@ class Game {
     this.htmlHighScore = document.getElementById('high-score-value');
     this.htmlHighScore.innerHTML = this.highScore;
     this.speed = 500;
-    this.well = new Well(this.ctx);
+    this.well = new Well(this.ctx, 20, 10);
+    this.well2 = new Well(this.ctx2, 3, 6);
     this.setupNewPiece();
     document.addEventListener('keydown', this.handleMute);
     document.addEventListener('keydown', this.handleHorizontalMovement);
@@ -395,7 +408,16 @@ class Game {
   }
 
   setupNewPiece() {
-    this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+    if (!this.nextTetrimino) {
+      this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      this.nextTetriminoIdx = this.getRandomInt(7);
+      this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
+    } else {
+      this.currentTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx, this.well);
+      this.nextTetriminoIdx = this.getRandomInt(7);
+      this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
+    }
+    this.nextTetrimino.renderNextTetrimino();
     if (this.currentTetrimino.checkIfGameOver()) {
       this.gameOver();
     } else {
@@ -464,12 +486,14 @@ const Block = __webpack_require__(1);
 
 class Well {
 
-  constructor(ctx) {
+  constructor(ctx, rows, columns) {
+    this.rows = rows;
+    this.columns = columns;
     this.ctx = ctx;
     let blocks = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < rows; i++) {
       let row = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < columns; j++) {
         row.push(new Block([i,j]));
       }
       blocks.push(row);
@@ -490,7 +514,7 @@ class Well {
   }
 
   rerenderWell() {
-    this.ctx.clearRect(0, 0, 250, 500);
+    this.ctx.clearRect(0, 0, (25 * this.columns), (25 * this.rows));
     this.blocks.forEach((row, idx1) => {
       row.forEach((block, idx2) => {
         if (block.color != 'white') {
@@ -499,6 +523,14 @@ class Well {
         this.ctx.fillRect(((idx2 * 25)), ((idx1 * 25)), 25, 25);
         this.ctx.strokeRect((idx2 * 25), (idx1 * 25), 25, 25);
         }
+      });
+    });
+  }
+
+  clearWell() {
+    this.blocks.forEach((row, idx1) => {
+      row.forEach((block, idx2) => {
+        this.assignBlockColor([idx2, idx1], 'white');
       });
     });
   }
