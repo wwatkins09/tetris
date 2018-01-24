@@ -18,7 +18,7 @@ main {
 #header {
   width: 100%;
   background-color: black;
-  height: 122px;
+  height: 125px;
   display: flex;
   justify-content: center;
 }
@@ -27,6 +27,10 @@ main {
   font-size: 32px;
   color: white;
 
+}
+
+.content {
+  display: flex;
 }
 
 .tetris {
@@ -151,11 +155,6 @@ main {
   margin-left: 10px;
 }
 
-.directions {
-  width: 145px;
-  font-size: 12px;
-}
-
 .scores {
   width: 100%;
 }
@@ -175,4 +174,33 @@ main {
 
 .next p {
   margin: 0;
+}
+
+#footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.created-by {
+  color: white;
+}
+
+.created-by p {
+  margin: 0;
+}
+
+.links a {
+  color: white;
+}
+
+.directions {
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 170px;
+  margin-left: 15px;
 }

@@ -9,40 +9,59 @@
     <title></title>
   </head>
   <body>
-    <main>
-      <span id="start" class="start-game-modal">
-        <p>Press "s" to start!</p>
+    <div class="content">
+      <span class="directions">
+        <p>How to play:</p>
+        <p>a/s/d - move</p>
+        <p>q/r - rotate</p>
+        <p>m - mute sound</p>
       </span>
-      <span id="over" class="hidden-modal">
-        <h3 id="game-over-message">Game Over</h3>
-        <p>Press "n" for new game!</p>
-      </span>
-      <span id="header">
-        <p>Tetris</p>
-      </span>
-      <div class="tetris">
-        <span class="left-col">
-          <span class="inner-border">
-            <div class="scores">
-              <div class="current-score">
-                <p>Score: </p>
-                <p id="current-score-value"></p>
-              </div>
-              <div id="high-score">
-                <p>High Score: </p>
-                <p id="high-score-value"></p>
-              </div>
-            </div>
-            <div class="next-piece">
-              <span class="next">
-                <p>Next</p>
-              </span>
-              <canvas id="myCanvas2"></canvas>
-            </div>
-          </span>
+      <main>
+        <span id="start" class="start-game-modal">
+          <p>Press "s" to start!</p>
         </span>
-        <canvas id="myCanvas"></canvas>
-      </div>
-    </main>
+        <span id="over" class="hidden-modal">
+          <h3 id="game-over-message">Game Over</h3>
+          <p>Press "n" for new game!</p>
+        </span>
+        <span id="header">
+          <p>Tetris</p>
+        </span>
+        <div class="tetris">
+          <span class="left-col">
+            <span class="inner-border">
+              <div class="scores">
+                <div class="current-score">
+                  <p>Score: </p>
+                  <p id="current-score-value"></p>
+                </div>
+                <div id="high-score">
+                  <p>High Score: </p>
+                  <p id="high-score-value"></p>
+                </div>
+              </div>
+              <div class="next-piece">
+                <span class="next">
+                  <p>Next</p>
+                </span>
+                <canvas id="myCanvas2"></canvas>
+              </div>
+            </span>
+          </span>
+          <canvas id="myCanvas"></canvas>
+        </div>
+        <span id="footer">
+          <div class="created-by">
+            <p>Created by Will Watkins</p>
+          </div>
+          <div class="links">
+            <a href="https://will-watkins.com/">Profile</a>
+            <a href="https://github.com/wwatkins09">Github</a>
+            <a href="https://www.linkedin.com/in/will-watkins">LinkedIn</a>
+          </div>
+        </span>
+      </main>
+    </div>
+
   </body>
 </html>
