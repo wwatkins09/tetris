@@ -321,7 +321,9 @@ class Game {
       startModal.classList.remove('start-game-modal');
       startModal.classList.add('hidden-modal');
       document.removeEventListener('keydown', this.handleStart);
-      window.localStorage.setItem('muted', 'false');
+      if (!window.localStorage.getItem('muted')) {
+        window.localStorage.setItem('muted', 'false');
+      }
       this.handleSetup();
     }
 
