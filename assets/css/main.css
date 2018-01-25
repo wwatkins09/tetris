@@ -10,7 +10,7 @@ main {
   background-size: 106%;
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin-left: 80px;
   position: relative;
 
 }
@@ -202,5 +202,5 @@ main {
   justify-content: center;
   align-items: center;
   height: 170px;
-  margin-left: 15px;
-}
+  margin-left: 80px;
+  margin-top: 150px;}
