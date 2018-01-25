@@ -4,6 +4,7 @@ const Block = require('./block.js');
 class Well {
 
   constructor(ctx, rows, columns) {
+    this.getBlock = this.getBlock.bind(this);
     this.rows = rows;
     this.columns = columns;
     this.ctx = ctx;

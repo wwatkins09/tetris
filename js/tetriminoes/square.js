@@ -9,7 +9,7 @@ class Square extends Tetrimino {
   }
 
   canMoveDown() {
-    return (this.y < 18 && this.getBlocksBelow().length === 0)
+    return (this.y < 18 && !this.hasBlocksBelow())
   }
 
   handleRotation(dir) {

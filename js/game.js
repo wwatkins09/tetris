@@ -50,7 +50,7 @@ class Game {
     this.htmlScore.innerHTML = this.score;
     this.htmlHighScore = document.getElementById('high-score-value');
     this.htmlHighScore.innerHTML = this.highScore;
-    this.speed = 500;
+    this.speed = 5000;
     this.well = new Well(this.ctx, 20, 10);
     this.well2 = new Well(this.ctx2, 3, 6);
     this.setupNewPiece();
@@ -124,7 +124,8 @@ class Game {
 
   setupNewPiece() {
     if (!this.nextTetrimino) {
-      this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      this.currentTetrimino = new LeftSnake(this.ctx, this.well);
       this.nextTetriminoIdx = this.getRandomInt(7);
       this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
     } else {

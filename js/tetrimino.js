@@ -11,7 +11,7 @@ class Tetrimino {
 
     this.move = this.move.bind(this);
 
-    this.getBlocksBelow = this.getBlocksBelow.bind(this);
+    this.hasBlocksBelow = this.hasBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
     this.renderNextTetrimino = this.renderNextTetrimino.bind(this);
@@ -66,15 +66,18 @@ class Tetrimino {
     this.well.rerenderWell();
   }
 
-  getBlocksBelow() {
-    let result = [];
+  hasBlocksBelow() {
+    let result = false;
     this.blockCoords.forEach((coord) => {
+      if (coord[1] >= 19) {
+        return;
+      }
       let lowerCoord = [coord[0], (coord[1] + 1)]
       if (this.well.getBlock(lowerCoord).status === 'filled') {
-        result.push(this.well.getBlock(lowerCoord));
+        result = true;
       }
     });
-    return result
+    return result;
   }
 
   setFinalPosition() {

@@ -80,7 +80,7 @@ class Tetrimino {
 
     this.move = this.move.bind(this);
 
-    this.getBlocksBelow = this.getBlocksBelow.bind(this);
+    this.hasBlocksBelow = this.hasBlocksBelow.bind(this);
     this.setFinalPosition = this.setFinalPosition.bind(this);
     this.checkIfGameOver = this.checkIfGameOver.bind(this);
     this.renderNextTetrimino = this.renderNextTetrimino.bind(this);
@@ -135,15 +135,18 @@ class Tetrimino {
     this.well.rerenderWell();
   }
 
-  getBlocksBelow() {
-    let result = [];
+  hasBlocksBelow() {
+    let result = false;
     this.blockCoords.forEach((coord) => {
+      if (coord[1] >= 19) {
+        return;
+      }
       let lowerCoord = [coord[0], (coord[1] + 1)]
       if (this.well.getBlock(lowerCoord).status === 'filled') {
-        result.push(this.well.getBlock(lowerCoord));
+        result = true;
       }
     });
-    return result
+    return result;
   }
 
   setFinalPosition() {
@@ -337,7 +340,7 @@ class Game {
     this.htmlScore.innerHTML = this.score;
     this.htmlHighScore = document.getElementById('high-score-value');
     this.htmlHighScore.innerHTML = this.highScore;
-    this.speed = 500;
+    this.speed = 5000;
     this.well = new Well(this.ctx, 20, 10);
     this.well2 = new Well(this.ctx2, 3, 6);
     this.setupNewPiece();
@@ -411,7 +414,8 @@ class Game {
 
   setupNewPiece() {
     if (!this.nextTetrimino) {
-      this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
+      this.currentTetrimino = new LeftSnake(this.ctx, this.well);
       this.nextTetriminoIdx = this.getRandomInt(7);
       this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
     } else {
@@ -491,6 +495,7 @@ const Block = __webpack_require__(1);
 class Well {
 
   constructor(ctx, rows, columns) {
+    this.getBlock = this.getBlock.bind(this);
     this.rows = rows;
     this.columns = columns;
     this.ctx = ctx;
@@ -561,10 +566,10 @@ class Alpha extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0)
+      return (this.y < 18 && !this.hasBlocksBelow())
     }
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0)
+      return (this.y < 17 && !this.hasBlocksBelow())
     }
   }
 
@@ -658,7 +663,7 @@ class Square extends Tetrimino {
   }
 
   canMoveDown() {
-    return (this.y < 18 && this.getBlocksBelow().length === 0)
+    return (this.y < 18 && !this.hasBlocksBelow())
   }
 
   handleRotation(dir) {
@@ -686,11 +691,11 @@ class Pyramid extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0);
+      return (this.y < 18 && !this.hasBlocksBelow());
     }
 
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0);
+      return (this.y < 17 && !this.hasBlocksBelow());
     }
   }
 
@@ -781,10 +786,10 @@ class Gamma extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0);
+      return (this.y < 18 && !this.hasBlocksBelow());
     }
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0);
+      return (this.y < 17 && !this.hasBlocksBelow());
     }
   }
 
@@ -879,11 +884,10 @@ class LeftSnake extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0)
+      return (this.y < 18 && !this.hasBlocksBelow())
     }
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0)
-
+      return (this.y < 17 && !this.hasBlocksBelow())
     }
   }
 
@@ -975,10 +979,10 @@ class RightSnake extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0)
+      return (this.y < 18 && !this.hasBlocksBelow())
     }
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0)
+      return (this.y < 17 && !this.hasBlocksBelow())
     }
   }
 
@@ -1069,11 +1073,11 @@ class Straight extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 19 && this.getBlocksBelow().length === 0);
+      return (this.y < 19 && !this.hasBlocksBelow());
     }
 
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 16 && this.getBlocksBelow().length === 0);
+      return (this.y < 16 && !this.hasBlocksBelow());
     }
   }
 

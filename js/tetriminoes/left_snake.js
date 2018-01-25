@@ -10,11 +10,10 @@ class LeftSnake extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 18 && this.getBlocksBelow().length === 0)
+      return (this.y < 18 && !this.hasBlocksBelow())
     }
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 17 && this.getBlocksBelow().length === 0)
-
+      return (this.y < 17 && !this.hasBlocksBelow())
     }
   }
 

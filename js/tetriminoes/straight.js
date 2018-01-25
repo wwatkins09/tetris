@@ -10,11 +10,11 @@ class Straight extends Tetrimino {
 
   canMoveDown() {
     if (this.rotationPos % 2 === 0) {
-      return (this.y < 19 && this.getBlocksBelow().length === 0);
+      return (this.y < 19 && !this.hasBlocksBelow());
     }
 
     if (this.rotationPos % 2 === 1) {
-      return (this.y < 16 && this.getBlocksBelow().length === 0);
+      return (this.y < 16 && !this.hasBlocksBelow());
     }
   }
 
