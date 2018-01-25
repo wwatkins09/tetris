@@ -313,8 +313,10 @@ class Game {
     this.handleSetup = this.handleSetup.bind(this);
     this.handleMute = this.handleMute.bind(this);
     this.setupNewPiece = this.setupNewPiece.bind(this);
+    this.handlePause = this.handlePause.bind(this);
     this.ctx = ctx;
     this.ctx2 = ctx2;
+    this.paused = false;
     document.addEventListener('keydown', this.handleStart)
   }
 
@@ -346,6 +348,7 @@ class Game {
     this.setupNewPiece();
     document.addEventListener('keydown', this.handleMute);
     document.addEventListener('keydown', this.handleHorizontalMovement);
+    document.addEventListener('keydown', this.handlePause);
     this.startPlayback();
   }
 
@@ -414,8 +417,7 @@ class Game {
 
   setupNewPiece() {
     if (!this.nextTetrimino) {
-      // this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
-      this.currentTetrimino = new LeftSnake(this.ctx, this.well);
+      this.currentTetrimino = new allPieces[this.getRandomInt(7)](this.ctx, this.well);
       this.nextTetriminoIdx = this.getRandomInt(7);
       this.nextTetrimino = new allPieces[this.nextTetriminoIdx](this.ctx2, this.well2);
     } else {
@@ -463,6 +465,7 @@ class Game {
     overModal.classList.remove('hidden-modal');
     overModal.classList.add('end-game-modal');
     document.removeEventListener('keydown', this.handleHorizontalMovement);
+    document.removeEventListener('keydown', this.handlePause);
     document.addEventListener('keydown', this.handleRestart);
     window.localStorage.setItem('highScore', this.highScore);
   }
@@ -471,10 +474,28 @@ class Game {
     if (event.key === "n") {
       document.removeEventListener('keydown', this.handleRestart);
       document.addEventListener('keydown', this.handleHorizontalMovement);
+      document.addEventListener('keydown', this.handlePause);
       const overModal = document.getElementById("over");
       overModal.classList.remove('end-game-modal');
       overModal.classList.add('hidden-modal');
       this.handleSetup();
+    }
+  }
+
+  handlePause(event) {
+    if (event.key === "p") {
+      const pauseModal = document.getElementById('paused');
+      if (this.paused) {
+        pauseModal.classList.add('hidden-modal');
+        document.addEventListener('keydown', this.handleHorizontalMovement);
+        this.falling = window.setInterval(this.handleVerticalMovement, this.speed);
+      } else {
+        pauseModal.classList.remove('hidden-modal');
+        document.removeEventListener('keydown', this.handleHorizontalMovement);
+        clearInterval(this.falling);
+
+      }
+      this.paused = !this.paused;
     }
   }
 

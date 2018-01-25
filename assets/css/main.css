@@ -203,4 +203,20 @@ main {
   align-items: center;
   height: 170px;
   margin-left: 80px;
-  margin-top: 150px;}
+  margin-top: 150px;
+}
+
+#paused {
+  position: absolute;
+  top: 19%;
+  left: 42%;
+  width: 200px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  z-index: 50;
+  background-color: white;
+}
