@@ -340,7 +340,7 @@ class Game {
     this.htmlScore.innerHTML = this.score;
     this.htmlHighScore = document.getElementById('high-score-value');
     this.htmlHighScore.innerHTML = this.highScore;
-    this.speed = 5000;
+    this.speed = 500;
     this.well = new Well(this.ctx, 20, 10);
     this.well2 = new Well(this.ctx2, 3, 6);
     this.setupNewPiece();
