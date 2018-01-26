@@ -139,7 +139,8 @@ class Tetrimino {
     let result = false;
     this.blockCoords.forEach((coord) => {
       if (coord[1] >= 19) {
-        return;
+        result = true
+        return
       }
       let lowerCoord = [coord[0], (coord[1] + 1)]
       if (this.well.getBlock(lowerCoord).status === 'filled') {
