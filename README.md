@@ -1,6 +1,7 @@
 # Tetris
-
-<img src="https://i.imgur.com/8lk59II.png" />
+<a href="http://will-watkins.com/tetris" >
+  <img src="https://i.imgur.com/8lk59II.png" />
+</a>
 
 ## About
 
