@@ -12,7 +12,7 @@ It's everyone's favorite Soviet puzzle game! Move and rotate the pieces to clear
 
 ### Gameplay
 
-The player's goal is to fill as many rows as possible given the seven various types of pieces without letting them stack up to the top of the screen, or "well". Each time a row is cleared, the player earns 100 points, and the falling speed increases. Players can rotate as well as move the pieces to line them up as efficiently as possible.
+The player's goal is to fill as many rows as possible with the seven various types of pieces without letting them reach the top of the screen, or "well". Each time a row is cleared, the player earns 100 points, and the falling speed increases. Players can rotate as well as move the pieces to stack them as efficiently as possible.
 
 ### Controls
 
