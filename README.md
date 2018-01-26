@@ -21,6 +21,16 @@ The player's goal is to fill as many rows as possible with the seven various typ
 * Press "m" to mute/unmute the music.
 * Press "p" to pause/restart the game.
 
+## Features
+
+### Tetriminos
+
+Each game piece (or "tetrimino") is represented by an instance of the Tetrimino class (with a subclass for each specific type). Each tetrimino contains exactly four blocks, which are represented by arrays of coordinates. For each direction of movement, including rotation, each block's coordinate is updated and compared with corresponding blocks contained in an instance of the game's Well class. Tetriminos can only move in a specified direction if each of their blocks would still be within the confines of the well and none of them would occupy a block already taken by another piece.
+
+### Well
+
+The game's well consists of a 10x20 grid of Blocks, each with its own `status` and `color` attributes. A block's `status` can either be 'filled' or 'empty', and the color represents the color of the piece occupying it, defaulting to white if it is empty. Once a piece is incapable of moving further, its position is fixed in the well, and the corresponding blocks are updated accordingly. The well itself is rendered using HTML5's Canvas element.
+
 ## Future Features
 
 * Global high scores
