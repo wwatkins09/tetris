@@ -148,19 +148,19 @@ class Game {
     if (event.key.includes("Arrow")) {
       event.preventDefault();
     }
-    if (event.key === "a" && this.currentTetrimino.canMoveLeft()) {
+    if ((event.key === "a" || event.key === "ArrowLeft") && this.currentTetrimino.canMoveLeft()) {
       this.currentTetrimino.move('left');
     }
-    if (event.key === "d" && this.currentTetrimino.canMoveRight()) {
+    if ((event.key === "d" || event.key === "ArrowRight") && this.currentTetrimino.canMoveRight()) {
       this.currentTetrimino.move('right');
     }
     if (event.key === "q") {
       this.currentTetrimino.handleRotation('counterClockwise');
     }
-    if (event.key === "e") {
+    if (event.key === "e" || event.key === "ArrowUp") {
       this.currentTetrimino.handleRotation('clockwise');
     }
-    if (event.key === "s") {
+    if (event.key === "s" || event.key === "ArrowDown") {
       this.handleVerticalMovement();
     }
   }
